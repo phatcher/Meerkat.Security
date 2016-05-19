@@ -1,0 +1,25 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Meerkat.Security</id>
+        <title>Meerkat Security</title>
+        <description>An activity based security framework</description>
+        <version>1.0.0</version>
+        <licenseUrl>http://opensource.org/licenses/mit-license.php</licenseUrl>
+        <copyright>Copyright © 2016 Paul Hatcher</copyright>
+        <owners>Paul Hatcher</owners>
+        <authors>Paul Hatcher</authors>
+        <projectUrl>https://github.com/phatcher/Meerkat.Security</projectUrl>
+        <releaseNotes>@releaseNotes@</releaseNotes>
+        <tags>Security Claims</tags>
+        <dependencies>
+            <dependency id="Common.Logging.Core" version="3.3.1" />
+        </dependencies>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    </metadata>
+    <files>
+        <file src="..\build\Meerkat.Security.dll" target="lib\net45" />
+        <file src="..\build\Meerkat.Security.pdb" target="lib\net45" />
+        <file src="..\build\Meerkat.Security.xml" target="lib\net45" />
+    </files>
+</package>
