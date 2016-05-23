@@ -70,7 +70,7 @@
     <Compile Include="Security\Activities\ActivityAuthorizer.cs" />
     <Compile Include="Security\Activities\ActivityAuthorizerFactory.cs" />
     <Compile Include="Security\Activities\ActivityExtensions.cs" />
-    <Compile Include="Security\Activities\AuthorisationReason.cs" />
+    <Compile Include="Security\Activities\AuthorizationReason.cs" />
     <Compile Include="Security\Activities\IActivityAuthorizer.cs" />
     <Compile Include="Security\Activities\Permission.cs" />
   </ItemGroup>

@@ -60,7 +60,7 @@ namespace Meerkat.Web.Mvc
             // Now check if we are authorised
             var reason = Authorizer.IsAuthorized(resource, action, httpContext.User);
 
-            return reason.IsAuthorised;         
+            return reason.IsAuthorized;         
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)

@@ -119,7 +119,7 @@ namespace Meerkat.Security.Web.Http
             var authorizer = Authorizer(actionContext);
             var reason = authorizer.IsAuthorized(resource, action, principal);
 
-            return reason.IsAuthorised;         
+            return reason.IsAuthorized;         
         }
 
         protected virtual string InferredResource(HttpRequestMessage request)

@@ -7,6 +7,9 @@ using Meerkat.Security.Activities;
 
 namespace Meerkat.Web.Mvc.Html
 {
+    /// <summary>
+    /// Provides HTML helpers to avoid displaying links that the user is not authorized to use.
+    /// </summary>
     public static class ActivityLinkExtensions
     {
         private static IActivityAuthorizer authorizer;
@@ -61,7 +64,7 @@ namespace Meerkat.Web.Mvc.Html
             }
 
             var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName);
-            return reason.IsAuthorised 
+            return reason.IsAuthorized 
                  ? MvcHtmlString.Create(HtmlHelper.GenerateLink(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection, linkText, null /* routeName */, actionName, controllerName, routeValues, htmlAttributes)) 
                  : MvcHtmlString.Empty;
         }
@@ -79,12 +82,12 @@ namespace Meerkat.Web.Mvc.Html
             }
 
             var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName);
-            return reason.IsAuthorised
+            return reason.IsAuthorized
                  ? MvcHtmlString.Create(HtmlHelper.GenerateLink(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection, linkText, null /* routeName */, actionName, controllerName, protocol, hostName, fragment, routeValues, htmlAttributes))
                  : MvcHtmlString.Empty;
         }
 
-        public static AuthorisationReason LinkAuthorisationReason(this HtmlHelper htmlHelper, string actionName, string controllerName)
+        public static AuthorizationReason LinkAuthorisationReason(this HtmlHelper htmlHelper, string actionName, string controllerName)
         {
             // Get the controller
             var cn = !string.IsNullOrEmpty(controllerName) ? controllerName : htmlHelper.ViewContext.RequestContext.RouteData.Values["controller"].ToString();

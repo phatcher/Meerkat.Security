@@ -14,6 +14,6 @@ namespace Meerkat.Security.Activities
         /// <param name="action">Action to use</param>
         /// <param name="principal">User to use</param>
         /// <returns>The authorization reason</returns>
-        AuthorisationReason IsAuthorized(string resource, string action, IPrincipal principal);
+        AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal);
     }
 }

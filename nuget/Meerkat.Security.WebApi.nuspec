@@ -13,7 +13,7 @@
         <releaseNotes>@releaseNotes@</releaseNotes>
         <tags>AspNetWebApi WebApi Security</tags>
         <dependencies>
-            <dependency id="Meerkat.Security" version="1.0.0" />
+            <dependency id="Meerkat.Security" version="1.0.1" />
         </dependencies>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
     </metadata>

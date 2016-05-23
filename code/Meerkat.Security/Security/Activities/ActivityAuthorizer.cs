@@ -51,16 +51,16 @@ namespace Meerkat.Security.Activities
         }
 
         /// <copydoc cref="IActivityAuthorizer.IsAuthorized" />
-        public AuthorisationReason IsAuthorized(string resource, string action, IPrincipal principal)
+        public AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal)
         {
-            var reason = new AuthorisationReason
+            var reason = new AuthorizationReason
             {
                 Resource = resource,
                 Action = action,
                 Principal = principal,
                 // We will always make a decision at this level
                 NoDecision = false,
-                IsAuthorised = DefaultAuthorization
+                IsAuthorized = DefaultAuthorization
             };
 
             // Check the activities
@@ -70,7 +70,7 @@ namespace Meerkat.Security.Activities
                 if (rs.NoDecision == false)
                 {
                     // Ok, we have a decision
-                    reason.IsAuthorised = rs.IsAuthorised;
+                    reason.IsAuthorized = rs.IsAuthorized;
                     if (reason.Resource != rs.Resource || reason.Action != rs.Action)
                     {
                         // Decided based on some other activity, so say what that was
@@ -81,7 +81,7 @@ namespace Meerkat.Security.Activities
                 }
             }
 
-            if (!reason.IsAuthorised)
+            if (!reason.IsAuthorized)
             {
                 Logger.InfoFormat("Failed authorization: User '{0}', Resource: '{1}', Action: '{2}'", principal == null ? "<Unknown>" : principal.Identity.Name, resource, action);
             }
@@ -95,15 +95,15 @@ namespace Meerkat.Security.Activities
         /// <param name="activity"></param>
         /// <param name="principal"></param>
         /// <returns></returns>
-        public AuthorisationReason IsAuthorized(Activity activity, IPrincipal principal)
+        public AuthorizationReason IsAuthorized(Activity activity, IPrincipal principal)
         {
-            var reason = new AuthorisationReason
+            var reason = new AuthorizationReason
             {
                 Resource =  activity.Resource,
                 Action = activity.Action,
                 Principal = principal,
                 NoDecision = true,
-                IsAuthorised = DefaultAuthorization,
+                IsAuthorized = DefaultAuthorization,
             };
 
             // Check the denies first, must take precedence over the allows
@@ -111,25 +111,25 @@ namespace Meerkat.Security.Activities
             {
                 // Have an explicit deny.
                 reason.NoDecision = false;
-                reason.IsAuthorised = false;
+                reason.IsAuthorized = false;
             }
             else if (CheckPermission(activity.Allow, principal, reason))
             {
                 // Have an explity allow.
                 reason.NoDecision = false;
-                reason.IsAuthorised = true;
+                reason.IsAuthorized = true;
             }
             else if (activity.Default.HasValue)
             {
                 // Default authorization on the activity.
                 reason.NoDecision = false;
-                reason.IsAuthorised = activity.Default.Value;
+                reason.IsAuthorized = activity.Default.Value;
             }
 
             return reason;
         }
 
-        private bool CheckPermission(Permission permission, IPrincipal principal, AuthorisationReason reason)
+        private bool CheckPermission(Permission permission, IPrincipal principal, AuthorizationReason reason)
         {
             // Check user over roles
             if (permission.Users.Any(user => principal.Identity.Name == user))

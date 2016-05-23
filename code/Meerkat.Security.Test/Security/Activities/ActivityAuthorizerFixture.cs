@@ -20,7 +20,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("charlie", new List<string>());
             var candidate = authorizer.IsAuthorized("Test", null, principal.Object);
 
-            Assert.AreEqual(true, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(true, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("charlie", new List<string>());
             var candidate = authorizer.IsAuthorized("Test", null, principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -46,7 +46,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("charlie", new List<string>());
             var candidate = authorizer.IsAuthorized("Test", null, principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs"); 
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs"); 
         }
 
         [Test]
@@ -58,7 +58,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("charlie", new List<string>());
             var candidate = authorizer.IsAuthorized("Test", null, principal.Object);
 
-            Assert.AreEqual(true, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(true, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("charlie", new List<string>());
             var candidate = authorizer.IsAuthorized("Default", null, principal.Object);
 
-            Assert.AreEqual(true, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(true, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("alice", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Default", null, principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -94,7 +94,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("bob", new List<string> { "a" });
             var candidate = authorizer.IsAuthorized("Default", null, principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("bob", new List<string> { "c" });
             var candidate = authorizer.IsAuthorized("Default", null, principal.Object);
 
-            Assert.AreEqual(true, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(true, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("charlie", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", null, principal.Object);
 
-            Assert.AreEqual(true, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(true, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -130,7 +130,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("alice", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", null, principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -142,7 +142,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("bob", new List<string> { "a" });
             var candidate = authorizer.IsAuthorized("Test", null, principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -154,7 +154,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("bob", new List<string> { "c" });
             var candidate = authorizer.IsAuthorized("Test", null, principal.Object);
 
-            Assert.AreEqual(true, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(true, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("charlie", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", null, principal.Object);
 
-            Assert.AreEqual(true, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(true, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -178,7 +178,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("alice", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", "Index", principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs");
             // NB Proves we got the "Test" activity
             Assert.IsNotNull(candidate.PrincipalReason);
             Assert.IsNull(candidate.PrincipalReason.Action);
@@ -193,7 +193,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("alice", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", "Foo", principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs");
             // NB Proves we got the "Test.Foo" activity
             Assert.IsNull(candidate.PrincipalReason);
         }
@@ -207,7 +207,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("bob", new List<string> { "a" });
             var candidate = authorizer.IsAuthorized("Test", "Index", principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs");
             // NB Proves we got the "Test" activity
             Assert.IsNotNull(candidate.PrincipalReason);
             Assert.IsNull(candidate.PrincipalReason.Action);
@@ -222,7 +222,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("bob", new List<string> { "a" });
             var candidate = authorizer.IsAuthorized("Test", "Foo", principal.Object);
 
-            Assert.AreEqual(false, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(false, candidate.IsAuthorized, "IsAuthorized differs");
             // NB Proves we got the "Test.Foo" activity
             Assert.IsNull(candidate.PrincipalReason);
         }
@@ -236,7 +236,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("bob", new List<string> { "c" });
             var candidate = authorizer.IsAuthorized("Test", "Index", principal.Object);
 
-            Assert.AreEqual(true, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(true, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         [Test]
@@ -248,7 +248,7 @@ namespace Meerkat.Test.Security.Activities
             var principal = MoqExtensions.MockPrincipal("charlie", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", "Index", principal.Object);
 
-            Assert.AreEqual(true, candidate.IsAuthorised, "IsAuthorized differs");
+            Assert.AreEqual(true, candidate.IsAuthorized, "IsAuthorized differs");
         }
 
         private List<Activity> SampleActivities(bool? defaultAuthorize)
