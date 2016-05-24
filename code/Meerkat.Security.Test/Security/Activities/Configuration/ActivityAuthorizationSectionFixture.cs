@@ -19,10 +19,20 @@ namespace Meerkat.Test.Security.Activities.Configuration
 
             var activity = section.Activities[0];
 
-            Assert.AreEqual("Home.Index", activity.Name, "Name differs");
-            Assert.IsNull(activity.Default, "Activity authorization default incorrect");
-            Assert.AreEqual("A, D", activity.Deny.Users, "Deny users differs");
-            Assert.AreEqual("B, C", activity.Allow.Roles, "Allow roles differs");
+            Assert.That("Home.Index", Is.EqualTo(activity.Name), "Name differs");
+            Assert.That(activity.Default, Is.Null, "Activity authorization default incorrect");
+            Assert.That("A, D", Is.EqualTo(activity.Deny.Users), "Deny users differs");
+            Assert.That("B, C", Is.EqualTo(activity.Allow.Roles), "Allow roles differs");
+
+            Assert.That(1, Is.EqualTo(activity.Allow.Claims.Count), "Allow claim count differs");
+            Assert.That("team", Is.EqualTo(activity.Allow.Claims[0].Name), "Allow claim type differs");
+            Assert.That("foo", Is.EqualTo(activity.Allow.Claims[0].Issuer), "Allow claim issuer differs");
+            Assert.That("F, G", Is.EqualTo(activity.Allow.Claims[0].Claims), "Allow claim differs");
+
+            Assert.That(1, Is.EqualTo(activity.Deny.Claims.Count), "Deny claim count differs");
+            Assert.That("team", Is.EqualTo(activity.Deny.Claims[0].Name), "Deny claim type differs");
+            Assert.That("bar", Is.EqualTo(activity.Deny.Claims[0].Issuer), "Deny claim issuer differs");
+            Assert.That("E", Is.EqualTo(activity.Deny.Claims[0].Claims), "Denu claim differs");
         }
 
         [Test]
@@ -35,10 +45,10 @@ namespace Meerkat.Test.Security.Activities.Configuration
 
             var activity = section.Activities[0];
 
-            Assert.AreEqual("Home.Index", activity.Name, "Name differs");
-            Assert.IsTrue(activity.Default.Value, "Activity authorization default incorrect");
-            Assert.AreEqual("A, C", activity.Deny.Users, "Deny users differs");
-            Assert.AreEqual("B", activity.Allow.Roles, "Allow roles differs");
+            Assert.That("Home.Index", Is.EqualTo(activity.Name), "Name differs");
+            Assert.That(activity.Default.Value, Is.True, "Activity authorization default incorrect");
+            Assert.That("A, C", Is.EqualTo(activity.Deny.Users), "Deny users differs");
+            Assert.That("B", Is.EqualTo(activity.Allow.Roles), "Allow roles differs");
         }
 
         [Test]
@@ -51,10 +61,10 @@ namespace Meerkat.Test.Security.Activities.Configuration
 
             var activity = section.Activities[0];
 
-            Assert.AreEqual("Home.Index", activity.Name, "Name differs");
-            Assert.IsFalse(activity.Default.Value, "Activity authorization default incorrect");
-            Assert.AreEqual("A", activity.Deny.Users, "Deny users differs");
-            Assert.AreEqual("B", activity.Allow.Roles, "Allow roles differs");
+            Assert.That("Home.Index", Is.EqualTo(activity.Name), "Name differs");
+            Assert.That(activity.Default.Value, Is.False, "Activity authorization default incorrect");
+            Assert.That("A", Is.EqualTo(activity.Deny.Users), "Deny users differs");
+            Assert.That("B", Is.EqualTo(activity.Allow.Roles), "Allow roles differs");
         }
     }
 }

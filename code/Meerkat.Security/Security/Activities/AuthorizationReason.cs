@@ -14,7 +14,7 @@ namespace Meerkat.Security.Activities
 
         public bool IsAuthorized { get; set; }
 
-        public string Role { get; set; }
+        public string Reason { get; set; }
 
         public AuthorizationReason PrincipalReason { get; set; }
 

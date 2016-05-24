@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 using Meerkat.Security.Activities.Configuration;
 
@@ -71,6 +72,18 @@ namespace Meerkat.Security.Activities
             if (!string.IsNullOrEmpty(element.Roles))
             {
                 permission.Roles = element.Roles.Split(',').Select(x => x.Trim()).ToList();
+            }
+
+            foreach (ClaimElement claimElement in element.Claims)
+            {
+                if (!string.IsNullOrEmpty(claimElement.Claims))
+                {
+                    foreach (var value in claimElement.Claims.Split(','))
+                    {
+                        var claim = new Claim(claimElement.Name.Trim(), value.Trim(), null, claimElement.Issuer.Trim());
+                        permission.Claims.Add(claim);
+                    }
+                }
             }
 
             return permission;

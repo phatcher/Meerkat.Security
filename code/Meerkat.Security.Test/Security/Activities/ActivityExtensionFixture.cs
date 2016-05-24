@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 
 using Meerkat.Security.Activities;
 using Meerkat.Security.Activities.Configuration;
@@ -16,13 +17,24 @@ namespace Meerkat.Test.Security.Activities
             var element = new PermissionElement
             {
                 Roles = "A, B, C",
-                Users = "Bob, Sue"
+                Users = "Bob, Sue",
+                Claims = new ClaimElementCollection
+                {
+                    new ClaimElement { Name = "team", Issuer = "Me", Claims = "F, G" },
+                    new ClaimElement { Name = "department", Claims = "H" }
+                }
             };
 
             var expected = new Permission
             {
                 Roles = new List<string> { "A", "B", "C" },
                 Users = new List<string> { "Bob", "Sue" },
+                Claims = new List<Claim>
+                {
+                    new Claim("team", "F", null, "Me"),
+                    new Claim("team", "G", null, "Me"),
+                    new Claim("department", "H"),
+                }
             };
 
             var candidate = element.ToPermission();
@@ -36,13 +48,24 @@ namespace Meerkat.Test.Security.Activities
             var element = new PermissionElement
             {
                 Roles = " A,B, C",
-                Users = "  Alice, Bob  "
+                Users = "  Alice, Bob  ",
+                Claims = new ClaimElementCollection
+                {
+                    new ClaimElement { Name = " team", Claims = " F, G " },
+                    new ClaimElement { Name = "department ", Claims = "H " }
+                }
             };
 
             var expected = new Permission
             {
                 Roles = new List<string> { "A", "B", "C" },
                 Users = new List<string> { "Alice", "Bob" },
+                Claims = new List<Claim>
+                {
+                    new Claim("team", "F"),
+                    new Claim("team", "G"),
+                    new Claim("department", "H"),
+                }
             };
 
             var candidate = element.ToPermission();

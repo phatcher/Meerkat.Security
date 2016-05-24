@@ -64,6 +64,8 @@
     <Compile Include="Configuration\ConfigElementCollection.cs" />
     <Compile Include="Configuration\NamedConfigElement.cs" />
     <Compile Include="Configuration\NamedConfigElementCollection.cs" />
+    <Compile Include="Security\Activities\Configuration\ClaimElement.cs" />
+    <Compile Include="Security\Activities\Configuration\ClaimElementCollection.cs" />
     <Compile Include="Security\Activities\Configuration\PermissionElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Activities\Activity.cs" />
@@ -73,6 +75,8 @@
     <Compile Include="Security\Activities\AuthorizationReason.cs" />
     <Compile Include="Security\Activities\IActivityAuthorizer.cs" />
     <Compile Include="Security\Activities\Permission.cs" />
+    <Compile Include="Security\Activities\PermissionExtensions.cs" />
+    <Compile Include="Security\Activities\PrincipalExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\Meerkat.Security.snk">

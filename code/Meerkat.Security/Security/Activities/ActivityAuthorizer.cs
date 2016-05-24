@@ -66,7 +66,7 @@ namespace Meerkat.Security.Activities
             // Check the activities
             foreach (var activity in FindActivities(resource, action))
             {
-                var rs = IsAuthorized(activity, principal);
+                var rs = principal.IsAuthorized(activity, DefaultAuthorization);
                 if (rs.NoDecision == false)
                 {
                     // Ok, we have a decision
@@ -75,6 +75,11 @@ namespace Meerkat.Security.Activities
                     {
                         // Decided based on some other activity, so say what that was
                         reason.PrincipalReason = rs;
+                    }
+                    else
+                    {
+                        // Preserve the reason information
+                        reason.Reason = rs.Reason;
                     }
 
                     break;
@@ -87,64 +92,6 @@ namespace Meerkat.Security.Activities
             }
 
             return reason;
-        }
-
-        /// <summary>
-        /// Check the authorization for an activity against a user
-        /// </summary>
-        /// <param name="activity"></param>
-        /// <param name="principal"></param>
-        /// <returns></returns>
-        public AuthorizationReason IsAuthorized(Activity activity, IPrincipal principal)
-        {
-            var reason = new AuthorizationReason
-            {
-                Resource =  activity.Resource,
-                Action = activity.Action,
-                Principal = principal,
-                NoDecision = true,
-                IsAuthorized = DefaultAuthorization,
-            };
-
-            // Check the denies first, must take precedence over the allows
-            if (CheckPermission(activity.Deny, principal, reason))
-            {
-                // Have an explicit deny.
-                reason.NoDecision = false;
-                reason.IsAuthorized = false;
-            }
-            else if (CheckPermission(activity.Allow, principal, reason))
-            {
-                // Have an explity allow.
-                reason.NoDecision = false;
-                reason.IsAuthorized = true;
-            }
-            else if (activity.Default.HasValue)
-            {
-                // Default authorization on the activity.
-                reason.NoDecision = false;
-                reason.IsAuthorized = activity.Default.Value;
-            }
-
-            return reason;
-        }
-
-        private bool CheckPermission(Permission permission, IPrincipal principal, AuthorizationReason reason)
-        {
-            // Check user over roles
-            if (permission.Users.Any(user => principal.Identity.Name == user))
-            {
-                return true;
-            }
-
-            foreach (var role in permission.Roles.Where(principal.IsInRole))
-            {
-                // Hit due to this role so record it.
-                reason.Role = role;
-                return true;
-            }
-
-            return false;
         }
 
         /// <summary>
