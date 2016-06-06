@@ -14,7 +14,8 @@ namespace Meerkat.Test.Security.Activities
         public void AuthorizerDefaultAuthorizationTrue()
         {
             var activities = new List<Activity>();
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             Assert.That(authorizer.DefaultAuthorization, Is.True, "Default authorization differs");
 
@@ -28,7 +29,8 @@ namespace Meerkat.Test.Security.Activities
         public void AuthorizerDefaultAuthorizationFalse()
         {
             var activities = new List<Activity>();
-            var authorizer = new ActivityAuthorizer(activities, false);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, false);
 
             Assert.AreEqual(false, authorizer.DefaultAuthorization, "Default authorization differs");
 
@@ -42,7 +44,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivtyDefaultAuthorizationFalse()
         {
             var activities = SampleActivities(false);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("charlie", new List<string>());
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -54,7 +57,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityDefaultAuthorizationTrue()
         {
             var activities = SampleActivities(true);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("charlie", new List<string>());
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -66,7 +70,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityDefaultAuthorizationFallback()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true, "Test");
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true, "Test");
 
             var principal = CreatePrincipal("charlie", new List<string>());
             var candidate = authorizer.IsAuthorized("Default", null, principal);
@@ -78,7 +83,8 @@ namespace Meerkat.Test.Security.Activities
         public void DefaultActivityDenyUserTakesPrecedence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true, "Test");
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true, "Test");
 
             var principal = CreatePrincipal("alice", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Default", null, principal);
@@ -90,7 +96,8 @@ namespace Meerkat.Test.Security.Activities
         public void DefaultActivityDenyRoleTakesPrecendence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true, "Test");
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true, "Test");
 
             var principal = CreatePrincipal("bob", new List<string> { "a" });
             var candidate = authorizer.IsAuthorized("Default", null, principal);
@@ -102,7 +109,8 @@ namespace Meerkat.Test.Security.Activities
         public void DefaultActivityDenyClaimTakesPrecendence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true, "Test");
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true, "Test");
 
             var principal = CreatePrincipal("bob", new List<string>(), new List<string> { "p" });
             var candidate = authorizer.IsAuthorized("Default", null, principal);
@@ -114,7 +122,8 @@ namespace Meerkat.Test.Security.Activities
         public void DefaultActivityGrantUser()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true, "Test");
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true, "Test");
 
             var principal = CreatePrincipal("bob", new List<string> { "c" });
             var candidate = authorizer.IsAuthorized("Default", null, principal);
@@ -126,7 +135,8 @@ namespace Meerkat.Test.Security.Activities
         public void DefaultActivityGrantRole()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("charlie", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -138,7 +148,8 @@ namespace Meerkat.Test.Security.Activities
         public void DefaultActivityGrantClaime()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("charlie", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -150,7 +161,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityDenyUserTakesPrecedence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("alice", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -163,7 +175,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityDenyRoleTakesPrecendence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("bob", new List<string> { "a" });
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -176,7 +189,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityDenyClaimTakesPrecendence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("bob", new List<string>(), new List<string> { "p" });
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -189,7 +203,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityGrantUser()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("bob", new List<string> { "c" });
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -202,7 +217,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityGrantRole()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("charlie", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -215,7 +231,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityGrantClaim()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("charlie", new List<string>(), new List<string> { "q" });
             var candidate = authorizer.IsAuthorized("Test", null, principal);
@@ -228,7 +245,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityHierarchyDenyUserTakesPrecedence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("alice", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", "Index", principal);
@@ -243,7 +261,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityHierarchyExplicitActionDenyUserTakesPrecedence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("alice", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", "Foo", principal);
@@ -257,7 +276,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityHierarchyDenyRoleTakesPrecendence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("bob", new List<string> { "a" });
             var candidate = authorizer.IsAuthorized("Test", "Index", principal);
@@ -272,7 +292,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityHierarchyExplicitActionDenyRoleTakesPrecendence()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("bob", new List<string> { "a" });
             var candidate = authorizer.IsAuthorized("Test", "Foo", principal);
@@ -286,7 +307,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityHierarchyGrantUser()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("bob", new List<string> { "c" });
             var candidate = authorizer.IsAuthorized("Test", "Index", principal);
@@ -298,7 +320,8 @@ namespace Meerkat.Test.Security.Activities
         public void ActivityHierarchyGrantRole()
         {
             var activities = SampleActivities(null);
-            var authorizer = new ActivityAuthorizer(activities, true);
+             var provider = new StaticActivityProvider(activities);
+           var authorizer = new ActivityAuthorizer(provider, true);
 
             var principal = CreatePrincipal("charlie", new List<string> { "b" });
             var candidate = authorizer.IsAuthorized("Test", "Index", principal);

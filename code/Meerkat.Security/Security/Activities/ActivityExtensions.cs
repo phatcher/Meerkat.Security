@@ -12,6 +12,22 @@ namespace Meerkat.Security.Activities
     public static class ActivityExtensions
     {
         /// <summary>
+        /// Convert some <see cref="Activity"/> into a dictionary so we can search them
+        /// </summary>
+        /// <param name="activities"></param>
+        /// <returns></returns>
+        public static IDictionary<string, Activity> ToDictionary(this IEnumerable<Activity> activities)
+        {
+            var dictionary = new Dictionary<string, Activity>();
+            foreach (var activity in activities)
+            {
+                dictionary[activity.Name] = activity;
+            }
+
+            return dictionary;
+        }
+
+        /// <summary>
         /// Convert an <see cref="ActivityAuthorizationSection"/> into a list of <see cref="Activity"/>.
         /// </summary>
         /// <param name="authorizationSection"></param>
@@ -87,6 +103,37 @@ namespace Meerkat.Security.Activities
             }
 
             return permission;
+        }
+
+        /// <summary>
+        /// Find all activities that have been modelled.
+        /// </summary>
+        /// <param name="activities"></param>
+        /// <param name="resource"></param>
+        /// <param name="action"></param>
+        /// <param name="defaultActivity"></param>
+        /// <returns></returns>
+        public static IEnumerable<Activity> FindActivities(this IDictionary<string, Activity> activities, string resource, string action, string defaultActivity)
+        {
+            Activity value = null;
+
+            // Find the closest activity match - resource centric
+            foreach (var activity in ActivityExtensions.Activities(resource, action))
+            {
+                if (activities.TryGetValue(activity, out value))
+                {
+                    yield return value;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(defaultActivity))
+            {
+                // Attempt to get the default activity.
+                if (activities.TryGetValue(defaultActivity, out value))
+                {
+                    yield return value;
+                }
+            }
         }
 
         /// <summary>

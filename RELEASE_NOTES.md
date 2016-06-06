@@ -1,3 +1,8 @@
+#### 2.0.0 (2016-06-06)
+* Introduce IActivityProvider interface to source Activities
+* Introduce ConfigurationSectionActivityProvider, AggregatingActivityProvider and CachingActivityProvider to acquire Activities
+* Remove ActivityAuthorizerFactory as IActivityProvider makes it easier to use straight IoC to construct ActivityAuthorizerFactory
+
 #### 1.1.0 (2016-05-24)
 * Introduce claims based authorization, permission can support multiple claims types/claims
 * Breaking change, removed Role from AuthorizationReason and replaced with Reason which records the User, Role or Claim that satisfies a permission

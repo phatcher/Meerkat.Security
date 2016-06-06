@@ -14,8 +14,9 @@ namespace Meerkat.Test.Security.Activities.Configuration
         {
             var section = (ActivityAuthorizationSection)ConfigurationManager.GetSection("activityAuthorization");
 
-            Assert.AreEqual(1, section.Activities.Count, "Activity count incorrect");
-            Assert.IsFalse(section.Default, "Authorization default incorrect");
+            Assert.That(section.Activities.Count, Is.EqualTo(2), "Activity count incorrect");
+            Assert.That(section.DefaultActivity, Is.EqualTo("Foo"), "Default activity incorrect");
+            Assert.That(section.Default, Is.False, "Authorization default incorrect");
 
             var activity = section.Activities[0];
 

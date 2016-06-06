@@ -1,0 +1,33 @@
+﻿using System.Collections.Generic;
+
+namespace Meerkat.Security.Activities
+{
+    public class StaticActivityProvider : IActivityProvider
+    {
+        private readonly IList<Activity> activities;
+        private readonly string defaultActivity;
+        private readonly bool? defaultAuthorization;
+
+        public StaticActivityProvider(IList<Activity> activities, bool? defaultAuthorization = null, string defaultActivity = null)
+        {
+            this.activities = activities;
+            this.defaultAuthorization = defaultAuthorization;
+            this.defaultActivity = defaultActivity;
+        }
+
+        public IList<Activity> Activities()
+        {
+            return activities;
+        }
+
+        public string DefaultActivity()
+        {
+            return defaultActivity;
+        }
+
+        public bool? DefaultAuthorization()
+        {
+            return defaultAuthorization;
+        }
+    }
+}
