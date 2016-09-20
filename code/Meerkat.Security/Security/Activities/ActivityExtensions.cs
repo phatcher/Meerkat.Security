@@ -65,6 +65,7 @@ namespace Meerkat.Security.Activities
                 Resource = resource,
                 Action = action,
                 Default = element.Default,
+                AllowUnauthenticated = element.AllowUnauthenticated,
                 Allow = element.Allow.ToPermission(),
                 Deny = element.Deny.ToPermission()
             };

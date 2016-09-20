@@ -79,6 +79,8 @@ namespace Meerkat.Test.Security.Activities
             var element = new ActivityElement
             {
                 Name = "Resource.Action",
+                AllowUnauthenticated = true,
+                Default = true,
                 Allow = new PermissionElement
                 {
                     Roles = "A",
@@ -95,6 +97,8 @@ namespace Meerkat.Test.Security.Activities
             {
                 Resource = "Resource",
                 Action = "Action",
+                AllowUnauthenticated = true,
+                Default = true,
                 Allow = new Permission
                 {
                     Roles = new List<string> { "A" },

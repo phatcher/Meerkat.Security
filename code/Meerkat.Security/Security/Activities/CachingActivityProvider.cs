@@ -28,6 +28,11 @@ namespace Meerkat.Security.Activities
             return AddOrGetExisting("defaultActivity", () => provider.DefaultActivity());
         }
 
+        public bool? DefaultAllowUnauthenticated()
+        {
+            return AddOrGetExisting("defaultAllowUnauthenticated", () => provider.DefaultAllowUnauthenticated());
+        }
+
         public bool? DefaultAuthorization()
         {
             return AddOrGetExisting("defaultAuthorization", () => provider.DefaultAuthorization());

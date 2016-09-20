@@ -20,6 +20,13 @@ namespace Meerkat.Security.Activities.Configuration
             set { base["action"] = value; }
         }
 
+        [ConfigurationProperty("allowUnauthenticated", DefaultValue = false, IsRequired = false, IsKey = false)]
+        public bool AllowUnauthenticated
+        {
+            get { return (bool)base["allowUnauthenticated"]; }
+            set { base["allowUnauthenticated"] = value; }
+        }
+
         [ConfigurationProperty("authorized", IsRequired = false, IsKey = false)]
         public bool? Default
         {

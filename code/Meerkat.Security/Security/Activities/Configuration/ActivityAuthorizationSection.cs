@@ -18,6 +18,16 @@ namespace Meerkat.Security.Activities.Configuration
         }
 
         /// <summary>
+        /// Default allow unauthenticated behaviour for the section (default: null).
+        /// </summary>
+        [ConfigurationProperty("allowUnauthenticated", IsRequired = false, IsKey = false)]
+        public bool? DefaultAllowUnauthenticated
+        {
+            get { return (bool?)base["allowUnauthenticated"]; }
+            set { base["allowUnauthenticated"] = value; }
+        }
+
+        /// <summary>
         /// Default activity to authorize against if specified activity not found (default: null).
         /// </summary>
         [ConfigurationProperty("defaultActivity", DefaultValue = null, IsRequired = false, IsKey = false)]

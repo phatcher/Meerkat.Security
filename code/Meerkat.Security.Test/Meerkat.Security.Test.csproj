@@ -75,8 +75,10 @@
     <Compile Include="Security\Activities\CachingAuthorizationProviderFixture.cs" />
     <Compile Include="Security\Activities\ConfigurationActivityProviderFixture.cs" />
     <Compile Include="Security\Activities\Configuration\ActivityAuthorizationSectionFixture.cs" />
+    <Compile Include="Security\Activities\PrincipalFixture.cs" />
     <Compile Include="Security\Activities\ResourceHierarchyFixture.cs" />
     <Compile Include="Security\Activities\ToDictionaryFixture.cs" />
+    <Compile Include="Security\Activities\UnauthenticatedUserFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

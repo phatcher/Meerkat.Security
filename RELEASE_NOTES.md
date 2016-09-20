@@ -1,3 +1,6 @@
+#### 2.1.0 (2016-09-20)
+* Introduce allowUnauthenticated flag to allow grant/deny unauthenticated users access to menu items
+
 #### 2.0.0 (2016-06-06)
 * Introduce IActivityProvider interface to source Activities
 * Introduce ConfigurationSectionActivityProvider, AggregatingActivityProvider and CachingActivityProvider to acquire Activities

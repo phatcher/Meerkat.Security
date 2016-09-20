@@ -24,8 +24,16 @@ namespace Meerkat.Security.Activities
                 IsAuthorized = defaultAuthorization,
             };
 
+            // Authentication takes precedence over everything
+            if (activity.AllowUnauthenticated == false && principal.Identity.IsAuthenticated == false)
+            {
+                // Have a deny due to not authenticated
+                reason.NoDecision = false;
+                reason.IsAuthorized = false;
+                reason.Reason = "IsAuthenticated: false";
+            }
             // Check the denies first, must take precedence over the allows
-            if (principal.HasPermission(activity.Deny, reason))
+            else if (principal.HasPermission(activity.Deny, reason))
             {
                 // Have an explicit deny.
                 reason.NoDecision = false;
@@ -47,6 +55,13 @@ namespace Meerkat.Security.Activities
             return reason;
         }
 
+        /// <summary>
+        /// Check whether the principal has the specified <see cref="Permission"/>
+        /// </summary>
+        /// <param name="principal"></param>
+        /// <param name="permission"></param>
+        /// <param name="reason"></param>
+        /// <returns></returns>
         public static bool HasPermission(this IPrincipal principal, Permission permission, AuthorizationReason reason)
         {
             // Check user over roles

@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace Meerkat.Test.Security.Activities
 {
     [TestFixture]
-    public class ActivityAuthorizerFixture
+    public class ActivityAuthorizerFixture : PrincipalFixture
     {
         [Test]
         public void AuthorizerDefaultAuthorizationTrue()
@@ -327,31 +327,6 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Test", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.True, "IsAuthorized differs");
-        }
-
-        private ClaimsPrincipal CreatePrincipal(string name, IList<string> roles, IList<string> teams = null)
-        {
-            if (teams == null)
-            {
-                teams = new List<string>();
-            }
-
-            var claims = new List<Claim>
-            {
-                new Claim("name", name)
-            };
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim("role", role));
-            }
-            foreach (var team in teams)
-            {
-                claims.Add(new Claim("team", team));
-            }
-            var identity = new ClaimsIdentity(claims, "custom", "name", "role");
-            var principal = new ClaimsPrincipal(identity);
-
-            return principal;
         }
 
         private List<Activity> SampleActivities(bool? defaultAuthorize)

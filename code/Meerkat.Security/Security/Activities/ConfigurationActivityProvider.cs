@@ -42,6 +42,13 @@ namespace Meerkat.Security.Activities
             return section != null ? section.DefaultActivity : null;
         }
 
+        /// <copydoc cref="IActivityProvider.DefaultAllowUnauthenticated" />
+        /// <remarks>Returns the <see cref="ActivityAuthorizationSection.DefaultAllowUnauthenticated"/> value.</remarks>
+        public bool? DefaultAllowUnauthenticated()
+        {
+            return section != null ? section.DefaultAllowUnauthenticated : null;
+        }
+
         /// <copydoc cref="IActivityProvider.DefaultAuthorization" />
         /// <remarks>Returns the <see cref="ActivityAuthorizationSection.Default"/> value.</remarks>
         public bool? DefaultAuthorization()

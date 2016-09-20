@@ -18,11 +18,13 @@ namespace Meerkat.Security.Activities
         /// <param name="provider"></param>
         /// <param name="authorized"></param>
         /// <param name="defaultActivity"></param>
-        public ActivityAuthorizer(IActivityProvider provider, bool authorized, string defaultActivity = null)
+        /// <param name="allowUnauthenticated"></param>
+        public ActivityAuthorizer(IActivityProvider provider, bool authorized, string defaultActivity = null, bool allowUnauthenticated = false)
         {
             this.provider = provider;
 
             DefaultAuthorization = authorized;
+            DefaultAllowUnauthenticated = allowUnauthenticated;
             DefaultActivity = defaultActivity;
         }
 
@@ -30,6 +32,11 @@ namespace Meerkat.Security.Activities
         /// Get or set the default authorization value if the authorizer has no opinion.
         /// </summary>
         public bool DefaultAuthorization { get; }
+
+        /// <summary>
+        /// Get or set the default allow unauthenticated value if the authorizer has no opinion.
+        /// </summary>
+        public bool DefaultAllowUnauthenticated { get; }
 
         /// <summary>
         /// Gets or sets the default activity to perform authorization against.
@@ -42,9 +49,10 @@ namespace Meerkat.Security.Activities
             // Get the state for this request
             var defaultAuthorization = provider.DefaultAuthorization() ?? DefaultAuthorization;
             var defaultActivity = provider.DefaultActivity() ?? DefaultActivity;
+            var defaultAllowUnauthenticated = provider.DefaultAllowUnauthenticated() ?? DefaultAllowUnauthenticated;
             var activities = provider.Activities().ToDictionary();
 
-            // Set up the reason
+             // Set up the reason
             var reason = new AuthorizationReason
             {
                 Resource = resource,
@@ -54,6 +62,13 @@ namespace Meerkat.Security.Activities
                 NoDecision = false,
                 IsAuthorized = defaultAuthorization
             };
+
+            // Do a check for the unauthenticated state
+            if (defaultAllowUnauthenticated == false && principal.Identity.IsAuthenticated == false)
+            {
+                reason.IsAuthorized = false;
+                reason.Reason = "IsAuthenticated: false";
+            }
 
             // Check the activities
             foreach (var activity in activities.FindActivities(resource, action, defaultActivity))

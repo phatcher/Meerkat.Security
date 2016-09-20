@@ -7,12 +7,14 @@ namespace Meerkat.Security.Activities
         private readonly IList<Activity> activities;
         private readonly string defaultActivity;
         private readonly bool? defaultAuthorization;
+        private readonly bool? defaultAllowUnauthenticated;
 
-        public StaticActivityProvider(IList<Activity> activities, bool? defaultAuthorization = null, string defaultActivity = null)
+        public StaticActivityProvider(IList<Activity> activities, bool? defaultAuthorization = null, string defaultActivity = null, bool? defaultAllowUnauthenticated = null)
         {
             this.activities = activities;
             this.defaultAuthorization = defaultAuthorization;
             this.defaultActivity = defaultActivity;
+            this.defaultAllowUnauthenticated = defaultAllowUnauthenticated;
         }
 
         public IList<Activity> Activities()
@@ -23,6 +25,11 @@ namespace Meerkat.Security.Activities
         public string DefaultActivity()
         {
             return defaultActivity;
+        }
+
+        public bool? DefaultAllowUnauthenticated()
+        {
+            return defaultAllowUnauthenticated;
         }
 
         public bool? DefaultAuthorization()

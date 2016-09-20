@@ -25,6 +25,14 @@ namespace Meerkat.Test.Security.Activities
         }
 
         [Test]
+        public void ActivitySectionDefaultAllowUnauthenticated()
+        {
+            var provider = new ConfigurationActivityProvider();
+
+            Assert.That(provider.DefaultAllowUnauthenticated(), Is.Null, "Default allowUnauthenticated differs");
+        }
+
+        [Test]
         public void ActivitySectionDefaultActivity()
         {
             var provider = new ConfigurationActivityProvider();

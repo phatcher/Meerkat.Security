@@ -44,6 +44,23 @@ namespace Meerkat.Security.Activities
             return defaultActivity;
         }
 
+        /// <copydoc cref="IActivityProvider.DefaultAllowUnauthenticated" />
+        /// <remarks>Last non-null provider wins</remarks>
+        public bool? DefaultAllowUnauthenticated()
+        {
+            bool? defaultAllowUnauthenticated = null;
+            foreach (var provider in providers)
+            {
+                var value = provider.DefaultAllowUnauthenticated();
+                if (value.HasValue)
+                {
+                    defaultAllowUnauthenticated = value;
+                }
+            }
+
+            return defaultAllowUnauthenticated;
+        }
+
         /// <copydoc cref="IActivityProvider.DefaultActivity" />
         /// <remarks>Last non-null provider wins</remarks>
         public bool? DefaultAuthorization()

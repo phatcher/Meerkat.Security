@@ -19,6 +19,12 @@ namespace Meerkat.Security.Activities
         string DefaultActivity();
 
         /// <summary>
+        /// Get the default allow unauthenticated policy.
+        /// </summary>
+        /// <returns></returns>
+        bool? DefaultAllowUnauthenticated();
+
+        /// <summary>
         /// Get the default authorization.
         /// </summary>
         /// <returns></returns>

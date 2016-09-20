@@ -16,6 +16,7 @@ namespace Meerkat.Test.Security.Activities.Configuration
 
             Assert.That(section.Activities.Count, Is.EqualTo(2), "Activity count incorrect");
             Assert.That(section.DefaultActivity, Is.EqualTo("Foo"), "Default activity incorrect");
+            Assert.That(section.DefaultAllowUnauthenticated, Is.Null, "Default AllowUnauthenticated incorrect");
             Assert.That(section.Default, Is.False, "Authorization default incorrect");
 
             var activity = section.Activities[0];
@@ -42,6 +43,7 @@ namespace Meerkat.Test.Security.Activities.Configuration
             var section = (ActivityAuthorizationSection)ConfigurationManager.GetSection("defaultAuthorizationTrue");
 
             Assert.AreEqual(1, section.Activities.Count, "Activity count incorrect");
+            Assert.That(section.DefaultAllowUnauthenticated, Is.True, "Default AllowUnauthenticated incorrect");
             Assert.IsTrue(section.Default, "Authorization default incorrect");
 
             var activity = section.Activities[0];
@@ -58,6 +60,7 @@ namespace Meerkat.Test.Security.Activities.Configuration
             var section = (ActivityAuthorizationSection)ConfigurationManager.GetSection("defaultAuthorizationFalse");
 
             Assert.AreEqual(1, section.Activities.Count, "Activity count incorrect");
+            Assert.That(section.DefaultAllowUnauthenticated, Is.False, "Default AllowUnauthenticated incorrect");
             Assert.IsFalse(section.Default, "Authorization default incorrect");
 
             var activity = section.Activities[0];
