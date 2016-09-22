@@ -2,11 +2,14 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Security.Principal;
 using System.ServiceModel.Channels;
 using System.Threading;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
+
+using Common.Logging;
 
 using Meerkat.Security.Activities;
 
@@ -24,6 +27,8 @@ namespace Meerkat.Security.Web.Http
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class ActivityAuthorizeAttribute : AuthorizationFilterAttribute
     {
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private readonly object typeId;
 
         public ActivityAuthorizeAttribute()
@@ -35,7 +40,7 @@ namespace Meerkat.Security.Web.Http
         /// Gets or sets the activity to authorize, 
         /// </summary>
         /// <remarks>
-        /// If not set will default to the curruent Controller
+        /// If not set will default to the current Controller
         /// </remarks>
         public string Resource { get; set; }
 
@@ -72,7 +77,7 @@ namespace Meerkat.Security.Web.Http
         /// </item>
         /// </list>
         /// <para>
-        /// If the <see cref="P:Activity"/> is empty a value is contructed from the controller and action names.
+        /// If the <see cref="P:Resource"/> or <see cref="P:Action"/> properties are empty, the controller and action names are passed to the <see cref="IControllerActivityMapper"/>.
         /// </para>
         /// <para>
         /// If authorization is denied then this method will invoke <see cref="M:HandleUnauthorizedRequest"/> to process the unauthorized request.
@@ -80,6 +85,7 @@ namespace Meerkat.Security.Web.Http
         /// </summary>
         /// <remarks>
         /// You can use he <see cref="System.Web.Http.AllowAnonymousAttribute"/> to cause authorization checks to be skipped for a particular action or controller.
+        /// Alternatively the appropriate <see cref="Activity.AllowUnauthenticated"/> property can be set.
         /// </remarks>
         /// <param name="actionContext">The action context</param>
         /// <returns><c>true</c> if access is authorized; otherwise <c>false</c>.</returns>
@@ -87,12 +93,7 @@ namespace Meerkat.Security.Web.Http
         {
             if (actionContext == null)
             {
-                throw new ArgumentNullException("actionContext");
-            }
-
-            if (SkipAuthorization(actionContext))
-            {
-                return;
+                throw new ArgumentNullException(nameof(actionContext));
             }
 
             if (!AuthorizeCore(actionContext))
@@ -103,53 +104,102 @@ namespace Meerkat.Security.Web.Http
 
         protected virtual bool AuthorizeCore(HttpActionContext actionContext)
         {
-            var request = actionContext.ControllerContext.Request;
-
-            var principal = request.GetUserPrincipal() ?? Thread.CurrentPrincipal;
-            if (principal == null || !principal.Identity.IsAuthenticated)
+            try
             {
+                var request = actionContext.ControllerContext.Request;
+                var controller = actionContext.ControllerContext.ControllerDescriptor.ControllerName;
+                var controllerAction = actionContext.ActionDescriptor.ActionName;
+
+                if (SkipAuthorization(actionContext))
+                {
+                    Logger.InfoFormat("Skipping authorization check for {0}/{1}", controller, controllerAction);
+                    return true;
+                }
+
+                var principal = CurrentUser(request);
+
+                // Take a copy, we might be a global filter so can't override the property values
+                var resource = Resource;
+                var action = Action;
+
+                // If nothing is specified, we need to infer the resource/action
+                if (string.IsNullOrEmpty(resource) || string.IsNullOrEmpty(action))
+                {
+                    var service = GetService<IControllerActivityMapper>(actionContext);
+                    var activity = service.Map(controller, controllerAction);
+                    if (string.IsNullOrEmpty(resource))
+                    {
+                        resource = activity.Item1;
+                    }
+                    if (string.IsNullOrEmpty(action))
+                    {
+                        action = activity.Item2;
+                    }
+                }
+
+                // Now check if we are authorised
+                var authorizer = GetService<IActivityAuthorizer>(actionContext);
+                var reason = authorizer.IsAuthorized(resource, action, principal);
+
+                Logger.DebugFormat("Authorizing {0}/{1} ({4}.{5}) for '{2}': {3}", controller, controllerAction, principal.Identity.Name, reason.IsAuthorized, resource, action);
+
+                return reason.IsAuthorized;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message);
+
+                // Fail-safe by denying access.
                 return false;
             }
-
-            // Work out which activity to check, can't override Resource/Action as we might be a global filter.
-            var resource = !string.IsNullOrEmpty(Resource) ? Resource : InferredResource(request);
-            var action = !string.IsNullOrEmpty(Action) ? Action : InferredAction(request);
-
-            // Now check if we are authorized.
-            var authorizer = Authorizer(actionContext);
-            var reason = authorizer.IsAuthorized(resource, action, principal);
-
-            return reason.IsAuthorized;         
-        }
-
-        protected virtual string InferredResource(HttpRequestMessage request)
-        {
-            var routeData = request.GetRouteData();
-            var controller = routeData.Values["controller"] as string;
-            return controller;
-        }
-
-        protected virtual string InferredAction(HttpRequestMessage request)
-        {
-            var routeData = request.GetRouteData();
-            var action = routeData.Values["action"] as string;
-            return action;
         }
 
         protected virtual void HandleUnauthorizedRequest(HttpActionContext actionContext)
         {
-            actionContext.Response = actionContext.ControllerContext.Request.CreateResponse(HttpStatusCode.Forbidden);
+            try
+            {
+                actionContext.Response = actionContext.ControllerContext.Request.CreateResponse(HttpStatusCode.Forbidden);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message);
+            }
         }
 
-        private static bool SkipAuthorization(HttpActionContext actionContext)
+        protected virtual bool SkipAuthorization(HttpActionContext actionContext)
         {
-            return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any()
-                   || actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
+            return actionContext.ActionDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any() ||
+                   actionContext.ControllerContext.ControllerDescriptor.GetCustomAttributes<AllowAnonymousAttribute>().Any();
         }
 
-        private IActivityAuthorizer Authorizer(HttpActionContext actionContext)
+        /// <summary>
+        /// Get the current user or the thread identity if not set (un-authenticated)
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        private IPrincipal CurrentUser(HttpRequestMessage request)
         {
-            return (IActivityAuthorizer) actionContext.ControllerContext.Configuration.DependencyResolver.GetService(typeof(IActivityAuthorizer));
+            try
+            {
+                return request.GetUserPrincipal() ?? Thread.CurrentPrincipal;
+            }
+            catch (Exception)
+            {
+                return Thread.CurrentPrincipal;
+            }
+        }
+
+        private T GetService<T>(HttpActionContext actionContext)
+        {
+            try
+            {
+                return (T)actionContext.ControllerContext.Configuration.DependencyResolver.GetService(typeof(T));
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("Could not resolve {0} - {1}", typeof(T).Name, ex.Message);
+                throw;
+            }
         }
     }
 }

@@ -1,3 +1,9 @@
+#### 2.2.0 (2016-09-22)
+* Introduce IControllerActivityMapper to allow resource/action names to be mapped from controller/action e.g. Get -> Read
+* Revised MVC and WebApi ActivityAuthorize attributes, removed extension points InferredResource/Activity should be done via IControllerActivityMapper
+* Change MVC ActivityAuthorize attributes to allow for unauthenticated to be handled by IActivityAuthorizer
+* Add NuGet dependency to Meerkat.Caching and updated min dependency versions
+
 #### 2.1.0 (2016-09-20)
 * Introduce allowUnauthenticated flag to allow grant/deny unauthenticated users access to menu items
 

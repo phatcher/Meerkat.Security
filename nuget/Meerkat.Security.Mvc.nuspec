@@ -13,7 +13,8 @@
         <releaseNotes>@releaseNotes@</releaseNotes>
         <tags>AspNet Security</tags>
         <dependencies>
-            <dependency id="Meerkat.Security" version="1.1.0" />
+            <dependency id="Common.Logging" version="3.3.1" />
+            <dependency id="Meerkat.Security" version="2.1.0" />
         </dependencies>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
     </metadata>

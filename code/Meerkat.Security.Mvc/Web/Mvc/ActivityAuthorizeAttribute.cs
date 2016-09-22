@@ -1,22 +1,33 @@
-﻿using System.Web;
+﻿using System;
+using System.Reflection;
+using System.Web;
 using System.Web.Mvc;
 
+using Common.Logging;
+
 using Meerkat.Security.Activities;
+using Meerkat.Security.Web;
 
 namespace Meerkat.Web.Mvc
 {
     /// <summary>
-    /// Uses <see cref="IActivityAuthorizer"/> to authorize a controller action
+    /// Uses <see cref="IActivityAuthorizer"/> to authorize a controller action.
+    /// <para>
+    /// If the <see cref="P:Resource"/> and <see cref="P:Action" /> are empty values, the controller and action names are passed to the <see cref="IControllerActivityMapper"/>.
+    /// </para> 
     /// </summary>
     public class ActivityAuthorizeAttribute : AuthorizeAttribute
     {
+        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private IActivityAuthorizer authorizer;
+        private IControllerActivityMapper inferrer;
 
         /// <summary>
         /// Gets or sets the resource to authorize, 
         /// </summary>
         /// <remarks>
-        /// If not set will default to the curruent Controller
+        /// If not set will default to the current Controller and then interpreted by the <see cref="IControllerActivityMapper"/>
         /// </remarks>
         public string Resource { get; set; }
 
@@ -24,7 +35,7 @@ namespace Meerkat.Web.Mvc
         /// Gets or sets the resource to authorize, 
         /// </summary>
         /// <remarks>
-        /// If not set will default to the current controller Action
+        /// If not set will default to the current controller Action and then interpreted by the <see cref="IControllerActivityMapper"/>
         /// </remarks>
         public string Action { get; set; }
 
@@ -32,11 +43,6 @@ namespace Meerkat.Web.Mvc
         /// Gets or sets the URL to use on failure of authorization.
         /// </summary>
         public string RedirectUrl { get; set; }
-        
-        /// <summary>
-        /// Gets or sets the activity to authorize, if not set will default to Controller.Action
-        /// </summary>
-        public string Activity { get; set; }
 
         public IActivityAuthorizer Authorizer
         {
@@ -45,22 +51,68 @@ namespace Meerkat.Web.Mvc
             set { authorizer = value; }
         }
 
+        public IControllerActivityMapper Inferrer
+        {
+            // NB Not great, but avoids coupling this class to a specific IoC container.
+            get { return inferrer ?? (inferrer = DependencyResolver.Current.GetService<IControllerActivityMapper>()); }
+            set { inferrer = value; }
+        }
+
         protected override bool AuthorizeCore(HttpContextBase httpContext)
-        {           
-            // Check for basic user and role authentication
-            if (!base.AuthorizeCore(httpContext))
+        {
+            if (httpContext == null)
             {
-                return false; 
+                throw new ArgumentNullException(nameof(httpContext));
             }
 
-            // Work out which activity to check, can't override Resource/Action as we might be a global filter.
-            var resource = !string.IsNullOrEmpty(Resource) ? Resource : InferredResource(httpContext);
-            var action = !string.IsNullOrEmpty(Action) ? Action : InferredAction(httpContext);
+            try
+            {
+                var principal = httpContext.User;
 
-            // Now check if we are authorised
-            var reason = Authorizer.IsAuthorized(resource, action, httpContext.User);
+                // Check for basic user and role authentication only if we are authenticated
+                // Core immedidately fails for unauthenticated and we have our own checks in the IsAuthorized method
+                if (principal.Identity.IsAuthenticated && !base.AuthorizeCore(httpContext))
+                {
+                    return false;
+                }
 
-            return reason.IsAuthorized;         
+                var routeData = httpContext.Request.RequestContext.RouteData;
+                // NB These can fail if there is no controller/action value, but we have no access to the ActionDescriptor!
+                var controller = routeData.GetRequiredString("controller");
+                var controllerAction = routeData.GetRequiredString("action");
+
+                // Take a copy, we might be a global filter so can't override the property values
+                var resource = Resource;
+                var action = Action;
+
+                // If nothing is specified, we need to infer the resource/action
+                if (string.IsNullOrEmpty(resource) || string.IsNullOrEmpty(action))
+                {
+                    var activity = Inferrer.Map(controller, controllerAction);
+                    if (string.IsNullOrEmpty(resource))
+                    {
+                        resource = activity.Item1;
+                    }
+                    if (string.IsNullOrEmpty(action))
+                    {
+                        action = activity.Item2;
+                    }
+                }
+
+                // Now check if we are authorised
+                var reason = Authorizer.IsAuthorized(resource, action, principal);
+
+                Logger.DebugFormat("Authorizing {0}/{1} ({4}.{5}) for '{2}': {3}", controller, controllerAction, principal.Identity.Name, reason.IsAuthorized, resource, action);
+
+                return reason.IsAuthorized;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex.Message);
+
+                // Fail-safe by denying access.
+                return false;
+            }
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
@@ -75,20 +127,6 @@ namespace Meerkat.Web.Mvc
                 // Do the base 
                 base.HandleUnauthorizedRequest(filterContext);
             }
-        }
-
-        protected virtual string InferredResource(HttpContextBase httpContext)
-        {
-            var routeData = httpContext.Request.RequestContext.RouteData;
-            var controller = routeData.GetRequiredString("controller");
-            return controller;
-        }
-
-        protected virtual string InferredAction(HttpContextBase httpContext)
-        {
-            var routeData = httpContext.Request.RequestContext.RouteData;
-            var action = routeData.GetRequiredString("action");
-            return action;
         }
     }
 }
