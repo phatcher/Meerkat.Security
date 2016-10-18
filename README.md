@@ -5,7 +5,7 @@ Library providing Activity based security checking (ABAC) with application to MV
 
 Available as a set of NuGet packages [Meerkat.Security](https://www.nuget.org/packages/Meerkat.Security/), [Meerkat.Security.Mvc](https://www.nuget.org/packages/Meerkat.Security.Mvc/) and [Meerkat.Security.WebApi](https://www.nuget.org/packages/Meerkat.Security.WebApi/)
 
-[![NuGet](https://img.shields.io/nuget/v/Meerkat.Security.svg)](https://img.shields.io/nuget/v/Meerkat.Security.svg)
+[![NuGet](https://img.shields.io/nuget/v/Meerkat.Security.svg)](https://www.nuget.org/packages/Meerkat.Security/)
 [![Build status](https://ci.appveyor.com/api/projects/status/t7wnsdotj5xj8s20/branch/master?svg=true)](https://ci.appveyor.com/project/PaulHatcher/meerkat-security/branch/master)
 
 Welcome to contributions from anyone.
@@ -21,7 +21,7 @@ I have my tools in C:\Tools so I use *build.cmd Default tools=C:\Tools encoding=
 
 The library is available under the [MIT License](http://en.wikipedia.org/wiki/MIT_License), for more information see the [License file][1] in the GitHub repository.
 
- [1]: https://github.com/phatcher/Meerkat.Security/blob/master/License.md
+ [1]: https://github.com/phatcher/Meerkat.Security/blob/master/License.md 
 
 ## Getting Started
 
