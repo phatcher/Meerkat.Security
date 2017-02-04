@@ -1,14 +1,14 @@
 ﻿using System.Security.Principal;
 using System.Reflection;
 
-using Common.Logging;
+using Meerkat.Logging;
 
 namespace Meerkat.Security.Activities
 {
     /// <copydoc cref="IActivityAuthorizer.IsAuthorized" />
     public class ActivityAuthorizer : IActivityAuthorizer
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly IActivityProvider provider;
 

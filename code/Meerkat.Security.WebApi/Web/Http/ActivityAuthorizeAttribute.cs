@@ -9,8 +9,7 @@ using System.Threading;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-using Common.Logging;
-
+using Meerkat.Logging;
 using Meerkat.Security.Activities;
 
 using AllowAnonymousAttribute = System.Web.Http.AllowAnonymousAttribute;
@@ -27,7 +26,7 @@ namespace Meerkat.Security.Web.Http
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
     public class ActivityAuthorizeAttribute : AuthorizationFilterAttribute
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly object typeId;
 

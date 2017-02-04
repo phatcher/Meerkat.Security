@@ -25,12 +25,12 @@ namespace Meerkat.Security.Activities
             };
 
             // Authentication takes precedence over everything
-            if (activity.AllowUnauthenticated == false && principal.Identity.IsAuthenticated == false)
+            if (principal.Identity.IsAuthenticated == false && activity.AllowUnauthenticated.HasValue)
             {
-                // Have a deny due to not authenticated
                 reason.NoDecision = false;
-                reason.IsAuthorized = false;
                 reason.Reason = "IsAuthenticated: false";
+                // Determined by the allowUnauthenticated
+                reason.IsAuthorized = activity.AllowUnauthenticated.Value;
             }
             // Check the denies first, must take precedence over the allows
             else if (principal.HasPermission(activity.Deny, reason))

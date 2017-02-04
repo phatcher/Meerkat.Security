@@ -1,7 +1,5 @@
 ﻿using System.Configuration;
 
-using Meerkat.Configuration;
-
 namespace Meerkat.Security.Activities.Configuration
 {
     public class ClaimElement : NamedConfigElement

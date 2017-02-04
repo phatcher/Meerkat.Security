@@ -3,8 +3,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
-using Common.Logging;
-
+using Meerkat.Logging;
 using Meerkat.Security.Activities;
 using Meerkat.Security.Web;
 
@@ -18,7 +17,7 @@ namespace Meerkat.Web.Mvc
     /// </summary>
     public class ActivityAuthorizeAttribute : AuthorizeAttribute
     {
-        private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private IActivityAuthorizer authorizer;
         private IControllerActivityMapper inferrer;

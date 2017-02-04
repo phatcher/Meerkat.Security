@@ -31,7 +31,7 @@
         /// <summary>
         /// Get or set whether we allow unauthenticated users
         /// </summary>
-        public bool AllowUnauthenticated { get; set; }
+        public bool? AllowUnauthenticated { get; set; }
 
         /// <summary>
         /// Gets or sets the default authorization.

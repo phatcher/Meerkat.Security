@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace Meerkat.Test.Security.Activities
 {
+    [TestFixture]
     public class UnauthenticatedUserFixture : PrincipalFixture
     {
         [Test]
@@ -65,6 +66,56 @@ namespace Meerkat.Test.Security.Activities
         }
 
         [Test]
+        public void UnauthenticatedActivityNullDefaultTrue()
+        {
+            var activities = new List<Activity>
+            {
+                new Activity
+                {
+                    Resource = "Home",
+                    Action = "Index",
+                    //AllowUnauthenticated = true,
+                    // NB This allows us to override the top level default
+                    Default = true,
+                }
+            };
+
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, false, null, false);
+
+            var principal = CreatePrincipal("fred", new List<string>(), null, false);
+            var candidate = authorizer.IsAuthorized("Home", "Index", principal);
+
+            Assert.That(candidate.IsAuthorized, Is.True, "IsAuthorized differs");
+            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+        }
+
+        [Test]
+        public void UnauthenticatedActivityNullDefaultFalse()
+        {
+            var activities = new List<Activity>
+            {
+                new Activity
+                {
+                    Resource = "Home",
+                    Action = "Index",
+                    //AllowUnauthenticated = true,
+                    // NB This allows us to override the top level default
+                    Default = false,
+                }
+            };
+
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, false, null, false);
+
+            var principal = CreatePrincipal("fred", new List<string>(), null, false);
+            var candidate = authorizer.IsAuthorized("Home", "Index", principal);
+
+            Assert.That(candidate.IsAuthorized, Is.False, "IsAuthorized differs");
+            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+        }
+
+        [Test]
         public void UnauthenticatedActivityTrueDefaultTrue()
         {
             var activities = new List<Activity>
@@ -86,7 +137,7 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.True, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.Reason, Is.EqualTo("IsAuthenticated: false"), "Reason differs");
         }
 
         [Test]
@@ -110,8 +161,8 @@ namespace Meerkat.Test.Security.Activities
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
-            Assert.That(candidate.IsAuthorized, Is.False, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.IsAuthorized, Is.True, "IsAuthorized differs");
+            Assert.That(candidate.Reason, Is.EqualTo("IsAuthenticated: false"), "Reason differs");
         }
 
         [Test]
@@ -162,6 +213,56 @@ namespace Meerkat.Test.Security.Activities
 
             Assert.That(candidate.IsAuthorized, Is.False, "IsAuthorized differs");
             Assert.That(candidate.Reason, Is.EqualTo("IsAuthenticated: false"), "Reason differs");
+        }
+
+        [Test]
+        public void AuthenticatedActivityNullDefaultTrue()
+        {
+            var activities = new List<Activity>
+            {
+                new Activity
+                {
+                    Resource = "Home",
+                    Action = "Index",
+                    //AllowUnauthenticated = true,
+                    // NB This allows us to override the top level default
+                    Default = true,
+                }
+            };
+
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, false, null, false);
+
+            var principal = CreatePrincipal("charlie", new List<string>());
+            var candidate = authorizer.IsAuthorized("Home", "Index", principal);
+
+            Assert.That(candidate.IsAuthorized, Is.True, "IsAuthorized differs");
+            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+        }
+
+        [Test]
+        public void AuthenticatedActivityNullDefaultFalse()
+        {
+            var activities = new List<Activity>
+            {
+                new Activity
+                {
+                    Resource = "Home",
+                    Action = "Index",
+                    //AllowUnauthenticated = true,
+                    // NB This allows us to override the top level default
+                    Default = false,
+                }
+            };
+
+            var provider = new StaticActivityProvider(activities);
+            var authorizer = new ActivityAuthorizer(provider, false, null, false);
+
+            var principal = CreatePrincipal("charlie", new List<string>());
+            var candidate = authorizer.IsAuthorized("Home", "Index", principal);
+
+            Assert.That(candidate.IsAuthorized, Is.False, "IsAuthorized differs");
+            Assert.That(candidate.Reason, Is.Null, "Reason differs");
         }
 
         [Test]

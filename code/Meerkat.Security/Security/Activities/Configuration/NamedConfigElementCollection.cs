@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace Meerkat.Configuration
+namespace Meerkat.Security.Activities.Configuration
 {
     /// <summary>
     /// Provides a generic collection of <see cref="NamedConfigElement" />, implementing all necessary behaviour for client types.

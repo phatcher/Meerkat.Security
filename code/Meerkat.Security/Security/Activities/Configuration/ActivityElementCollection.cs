@@ -1,6 +1,4 @@
-﻿using Meerkat.Configuration;
-
-namespace Meerkat.Security.Activities.Configuration
+﻿namespace Meerkat.Security.Activities.Configuration
 {
     public class ActivityElementCollection : NamedConfigElementCollection<ActivityElement>
     {

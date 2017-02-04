@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace Meerkat.Configuration
+namespace Meerkat.Security.Activities.Configuration
 {
     /// <summary>
     /// Extends <see cref="Configuration" /> with a standard name property which is required an is the key of the element.

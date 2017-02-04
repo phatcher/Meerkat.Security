@@ -38,8 +38,12 @@
       <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Meerkat.Caching, Version=1.0.4.0, Culture=neutral, PublicKeyToken=ac4b64546145efb9, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Meerkat.Caching.1.0.4\lib\net45\Meerkat.Caching.dll</HintPath>
+    <Reference Include="Meerkat.Caching, Version=1.0.6.0, Culture=neutral, PublicKeyToken=ac4b64546145efb9, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Meerkat.Caching.1.0.6\lib\net45\Meerkat.Caching.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Meerkat.Logging, Version=1.0.1.0, Culture=neutral, PublicKeyToken=48420f6ca18bf904, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Meerkat.Logging.1.0.1\lib\net45\Meerkat.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

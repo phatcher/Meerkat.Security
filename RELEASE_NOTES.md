@@ -1,3 +1,7 @@
+#### 2.2.1 (2017-02-04)
+* Allow Activity.AllowUnauthenticated flag to be null so it can bubble up like Default.
+* Change from Common.Logging to Meerkat.Logging, unifies logging framework across libraries.
+
 #### 2.2.0 (2016-09-22)
 * Introduce IControllerActivityMapper to allow resource/action names to be mapped from controller/action e.g. Get -> Read
 * Revised MVC and WebApi ActivityAuthorize attributes, removed extension points InferredResource/Activity should be done via IControllerActivityMapper

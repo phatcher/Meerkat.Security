@@ -37,16 +37,16 @@
     <AssemblyOriginatorKeyFile>..\..\Meerkat.Security.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Common.Logging, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Common.Logging.3.3.1\lib\net40\Common.Logging.dll</HintPath>
+    <Reference Include="GitLink, Version=2.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\gitlink.2.4.1\lib\net45\GitLink.exe</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Common.Logging.Core, Version=3.3.1.0, Culture=neutral, PublicKeyToken=af08829b84f0328e, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Common.Logging.Core.3.3.1\lib\net40\Common.Logging.Core.dll</HintPath>
+    <Reference Include="Meerkat.Caching, Version=1.0.6.0, Culture=neutral, PublicKeyToken=ac4b64546145efb9, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Meerkat.Caching.1.0.6\lib\net45\Meerkat.Caching.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Meerkat.Caching, Version=1.0.4.0, Culture=neutral, PublicKeyToken=ac4b64546145efb9, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Meerkat.Caching.1.0.4\lib\net45\Meerkat.Caching.dll</HintPath>
+    <Reference Include="Meerkat.Logging, Version=1.0.1.0, Culture=neutral, PublicKeyToken=48420f6ca18bf904, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Meerkat.Logging.1.0.1\lib\net45\Meerkat.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -69,9 +69,9 @@
     <Compile Include="Security\Activities\Configuration\ActivityAuthorizationSection.cs" />
     <Compile Include="Security\Activities\Configuration\ActivityElement.cs" />
     <Compile Include="Security\Activities\Configuration\ActivityElementCollection.cs" />
-    <Compile Include="Configuration\ConfigElementCollection.cs" />
-    <Compile Include="Configuration\NamedConfigElement.cs" />
-    <Compile Include="Configuration\NamedConfigElementCollection.cs" />
+    <Compile Include="Security\Activities\Configuration\ConfigElementCollection.cs" />
+    <Compile Include="Security\Activities\Configuration\NamedConfigElement.cs" />
+    <Compile Include="Security\Activities\Configuration\NamedConfigElementCollection.cs" />
     <Compile Include="Security\Activities\Configuration\ClaimElement.cs" />
     <Compile Include="Security\Activities\Configuration\ClaimElementCollection.cs" />
     <Compile Include="Security\Activities\Configuration\PermissionElement.cs" />
@@ -96,11 +96,11 @@
     <None Include="..\..\Meerkat.Security.snk">
       <Link>Properties\Meerkat.Security.snk</Link>
     </None>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,7 +1,5 @@
 ﻿using System.Configuration;
 
-using Meerkat.Configuration;
-
 namespace Meerkat.Security.Activities.Configuration
 {
     public class ActivityElement : NamedConfigElement
@@ -20,10 +18,10 @@ namespace Meerkat.Security.Activities.Configuration
             set { base["action"] = value; }
         }
 
-        [ConfigurationProperty("allowUnauthenticated", DefaultValue = false, IsRequired = false, IsKey = false)]
-        public bool AllowUnauthenticated
+        [ConfigurationProperty("allowUnauthenticated", IsRequired = false, IsKey = false)]
+        public bool? AllowUnauthenticated
         {
-            get { return (bool)base["allowUnauthenticated"]; }
+            get { return (bool?)base["allowUnauthenticated"]; }
             set { base["allowUnauthenticated"] = value; }
         }
 

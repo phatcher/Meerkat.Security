@@ -20,6 +20,7 @@ let release = LoadReleaseNotes "RELEASE_NOTES.md"
 let buildDir = "./build"
 let toolsDir = getBuildParamOrDefault "tools" "./tools"
 let nugetDir = "./nuget"
+let solutionFile = "Meerkat.Security.sln"
 
 let nunitPath = toolsDir @@ "NUnit-2.6.3/bin"
 
@@ -42,7 +43,7 @@ Target "SetVersion" (fun _ ->
 )
 
 Target "Build" (fun _ ->
-    !! "./code/**/*.csproj"
+    !! solutionFile
     |> MSBuildRelease buildDir "Build"
     |> Log "AppBuild-Output: "
 )
