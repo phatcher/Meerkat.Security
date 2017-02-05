@@ -22,7 +22,7 @@ let toolsDir = getBuildParamOrDefault "tools" "./tools"
 let nugetDir = "./nuget"
 let solutionFile = "Meerkat.Security.sln"
 
-let nunitPath = toolsDir @@ "NUnit-2.6.3/bin"
+//let nunitPath = toolsDir @@ "NUnit-2.6.3/bin"
 
 // Targets
 Target "Clean" (fun _ ->
@@ -52,7 +52,7 @@ Target "Test" (fun _ ->
     !! (buildDir + "/*.Test.dll")
     |> NUnit (fun p ->
        {p with
-          ToolPath = nunitPath
+          //ToolPath = nunitPath
           DisableShadowCopy = true
           OutputFile = buildDir @@ "TestResults.xml"})
 )

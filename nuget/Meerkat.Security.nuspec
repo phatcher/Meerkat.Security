@@ -13,8 +13,8 @@
         <releaseNotes>@releaseNotes@</releaseNotes>
         <tags>Security Claims</tags>
         <dependencies>
-            <dependency id="Meerkat.Logging" version="1.0.1" />
-            <dependency id="Meerkat.Caching" version="[1.0.4,2.0)" />
+            <dependency id="Meerkat.Logging" version="1.0.2" />
+            <dependency id="Meerkat.Caching" version="[1.0.6,2.0)" />
         </dependencies>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
     </metadata>

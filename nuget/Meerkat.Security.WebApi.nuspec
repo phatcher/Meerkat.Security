@@ -13,8 +13,8 @@
         <releaseNotes>@releaseNotes@</releaseNotes>
         <tags>AspNetWebApi WebApi Security</tags>
         <dependencies>
-            <dependency id="Meerkat.Logging" version="1.0.1" />
-            <dependency id="Meerkat.Security" version="2.1.0" />
+            <dependency id="Meerkat.Logging" version="1.0.2" />
+            <dependency id="Meerkat.Security" version="2.2.1" />
         </dependencies>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
     </metadata>
