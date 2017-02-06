@@ -41,8 +41,8 @@
       <HintPath>..\..\packages\gitlink.2.4.1\lib\net45\GitLink.exe</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Meerkat.Logging, Version=1.0.1.0, Culture=neutral, PublicKeyToken=48420f6ca18bf904, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Meerkat.Logging.1.0.1\lib\net45\Meerkat.Logging.dll</HintPath>
+    <Reference Include="Meerkat.Logging, Version=1.0.2.0, Culture=neutral, PublicKeyToken=48420f6ca18bf904, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Meerkat.Logging.1.0.2\lib\net45\Meerkat.Logging.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
