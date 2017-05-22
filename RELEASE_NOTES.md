@@ -1,3 +1,7 @@
+### 2.2.2 (2017-05-22)
+* Expose cache duration on CachingActivityProvider/CachingActivityAuthorizer
+* Build using Pdbgit to get linked sources
+
 #### 2.2.1 (2017-02-04)
 * Allow Activity.AllowUnauthenticated flag to be null so it can bubble up like Default.
 * Change from Common.Logging to Meerkat.Logging, unifies logging framework across libraries.

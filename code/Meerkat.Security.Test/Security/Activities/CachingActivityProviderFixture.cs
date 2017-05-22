@@ -22,7 +22,7 @@ namespace Meerkat.Test.Security.Activities
 
             p1.Setup(x => x.Activities()).Returns(new List<Activity> { new Activity() });
 
-            var provider = new CachingActivityProvider(p1.Object, cache.Object);
+            var provider = new CachingActivityProvider(p1.Object, cache.Object, null);
 
             // Act
             var expected = provider.Activities();
@@ -41,7 +41,7 @@ namespace Meerkat.Test.Security.Activities
 
             p1.Setup(x => x.DefaultActivity()).Returns("Foo");
 
-            var provider = new CachingActivityProvider(p1.Object, cache.Object);
+            var provider = new CachingActivityProvider(p1.Object, cache.Object, null);
 
             // Act
             var expected = provider.DefaultActivity();
@@ -60,7 +60,7 @@ namespace Meerkat.Test.Security.Activities
 
             p1.Setup(x => x.DefaultAuthorization()).Returns(false);
 
-            var provider = new CachingActivityProvider(p1.Object, cache.Object);
+            var provider = new CachingActivityProvider(p1.Object, cache.Object, null);
 
             // Act
             var expected = provider.DefaultAuthorization();
@@ -81,7 +81,7 @@ namespace Meerkat.Test.Security.Activities
             cache.Setup(x => x.Get("activities", "activityProvider")).Returns(new List<Activity> { new Activity() });
             p1.Setup(x => x.Activities()).Returns(new List<Activity>());
 
-            var provider = new CachingActivityProvider(p1.Object, cache.Object);
+            var provider = new CachingActivityProvider(p1.Object, cache.Object, null);
 
             // Act
             var expected = provider.Activities();
@@ -91,7 +91,7 @@ namespace Meerkat.Test.Security.Activities
         }
 
         [Test]
-        public void CachedDefaultActivity()        
+        public void CachedDefaultActivity()
         {
             // Arrange
             var p1 = new Mock<IActivityProvider>();
@@ -101,7 +101,7 @@ namespace Meerkat.Test.Security.Activities
             cache.Setup(x => x.Get("defaultActivity", "activityProvider")).Returns("Foo");
             p1.Setup(x => x.Activities()).Returns(new List<Activity>());
 
-            var provider = new CachingActivityProvider(p1.Object, cache.Object);
+            var provider = new CachingActivityProvider(p1.Object, cache.Object, null);
 
             // Act
             var expected = provider.DefaultActivity();
@@ -121,7 +121,7 @@ namespace Meerkat.Test.Security.Activities
             cache.Setup(x => x.Get("defaultAuthorization", "activityProvider")).Returns(false);
             p1.Setup(x => x.Activities()).Returns(new List<Activity>());
 
-            var provider = new CachingActivityProvider(p1.Object, cache.Object);
+            var provider = new CachingActivityProvider(p1.Object, cache.Object, null);
 
             // Act
             var expected = provider.DefaultAuthorization();

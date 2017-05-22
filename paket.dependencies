@@ -1,7 +1,7 @@
 source http://nuget.org/api/v2
 
 group Build
-	source http://nuget.org/api/v2
-	
+    source http://nuget.org/api/v2
+    
     nuget FAKE
-    nuget Nuget.CommandLine	
+    nuget Nuget.CommandLine

@@ -67,6 +67,11 @@ namespace Meerkat.Web.Mvc
             try
             {
                 var principal = httpContext.User;
+                if (principal == null)
+                {
+                    Logger.Warn("No principal");
+                    return false;
+                }
 
                 // Check for basic user and role authentication only if we are authenticated
                 // Core immedidately fails for unauthenticated and we have our own checks in the IsAuthorized method
@@ -76,6 +81,7 @@ namespace Meerkat.Web.Mvc
                 }
 
                 var routeData = httpContext.Request.RequestContext.RouteData;
+
                 // NB These can fail if there is no controller/action value, but we have no access to the ActionDescriptor!
                 var controller = routeData.GetRequiredString("controller");
                 var controllerAction = routeData.GetRequiredString("action");

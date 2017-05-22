@@ -60,7 +60,7 @@ namespace Meerkat.Web.Mvc.Html
         {
             if (string.IsNullOrEmpty(linkText))
             {
-                throw new ArgumentException("Null or empty", "linkText");
+                throw new ArgumentException("Null or empty", nameof(linkText));
             }
 
             var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName);
@@ -78,7 +78,7 @@ namespace Meerkat.Web.Mvc.Html
         {
             if (string.IsNullOrEmpty(linkText))
             {
-                throw new ArgumentException("Null or empty", "linkText");
+                throw new ArgumentException("Null or empty", nameof(linkText));
             }
 
             var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName);
