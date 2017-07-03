@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 using Meerkat.Caching;
 
@@ -30,9 +31,17 @@ namespace Meerkat.Security.Activities
         /// <copydoc cref="IActivityAuthorizer.IsAuthorized" />
         public AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal)
         {
-            var key = string.Format("(0}.{1}:{2}", resource, action, principal);
+            return cache.AddOrGetExisting(Key(resource, action, principal), () => authorizer.IsAuthorized(resource, action, principal), DateTimeOffset.UtcNow.Add(duration), "authorizer");
+        }
 
-            return cache.AddOrGetExisting(key, () => authorizer.IsAuthorized(resource, action, principal), DateTimeOffset.UtcNow.Add(duration), "authorizer");
+        public async Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal)
+        {
+            return await cache.AddOrGetExistingAsync(Key(resource, action, principal), async () => await authorizer.IsAuthorizedAsync(resource, action, principal).ConfigureAwait(false), DateTimeOffset.UtcNow.Add(duration), "authorizer").ConfigureAwait(false);
+        }
+
+        private string Key(string resource, string action, IPrincipal principal)
+        {
+            return $"{resource}.{action}:{principal}";
         }
     }
 }

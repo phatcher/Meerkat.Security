@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Meerkat.Security.Activities
 {
@@ -22,6 +23,19 @@ namespace Meerkat.Security.Activities
             foreach (var provider in providers)
             {
                 activities.AddRange(provider.Activities());
+            }
+
+            return activities;
+        }
+
+        public async Task<IList<Activity>> ActivitiesAsync()
+        {
+            var activities = new List<Activity>();
+            // TODO: We could do the lot and WaitAll?
+            foreach (var provider in providers)
+            {
+                var x = await provider.ActivitiesAsync().ConfigureAwait(false);
+                activities.AddRange(x);
             }
 
             return activities;
@@ -77,5 +91,6 @@ namespace Meerkat.Security.Activities
 
             return defaultAuthorization;
         }
+
     }
 }

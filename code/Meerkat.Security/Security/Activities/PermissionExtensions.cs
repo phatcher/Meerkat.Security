@@ -7,26 +7,14 @@ namespace Meerkat.Security.Activities
     {
         public static string HasUser(this Permission permission, IPrincipal principal)
         {
-            foreach (var user in permission.Users)
-            {
-                if (user == principal.Identity.Name)
-                {
-                    return user;
-                }
-            }
-
-            return null;
+            // Return the user with matching name
+            return permission.Users.FirstOrDefault(user => user == principal.Identity.Name);
         }
 
         public static string HasRole(this Permission permission, IPrincipal principal)
         {
-            foreach (var role in permission.Roles.Where(principal.IsInRole))
-            {
-                // Hit due to this role so record it.
-                return role;
-            }
-
-            return null;
+            // Return the first role that has permission
+            return permission.Roles.FirstOrDefault(principal.IsInRole);
         }
 
         public static string HasClaim(this Permission permission, IPrincipal principal)

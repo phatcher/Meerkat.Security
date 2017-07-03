@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Meerkat.Security.Activities
 {
@@ -12,6 +13,12 @@ namespace Meerkat.Security.Activities
         /// </summary>
         /// <returns></returns>
         IList<Activity> Activities();
+
+        /// <summary>
+        /// Gets the current set of activities asynchronously
+        /// </summary>
+        /// <returns></returns>
+        Task<IList<Activity>> ActivitiesAsync();
 
         /// <summary>
         /// Gets the default activity.

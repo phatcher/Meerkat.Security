@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 using Meerkat.Caching;
 
 namespace Meerkat.Security.Activities
@@ -35,6 +35,12 @@ namespace Meerkat.Security.Activities
             return AddOrGetExisting("activities", () => provider.Activities());
         }
 
+
+        public async Task<IList<Activity>> ActivitiesAsync()
+        {
+            return await AddOrGetExistingAsync("activities", async () => await provider.ActivitiesAsync().ConfigureAwait(false)).ConfigureAwait(false);
+        }
+
         /// <copydoc cref="IActivityProvider.DefaultActivity" />
 
         public string DefaultActivity()
@@ -59,6 +65,11 @@ namespace Meerkat.Security.Activities
         private T AddOrGetExisting<T>(string key, Func<T> func)
         {
             return cache.AddOrGetExisting<T>(key, func, DateTimeOffset.UtcNow.Add(duration), CacheRegion);
+        }
+
+        private Task<T> AddOrGetExistingAsync<T>(string key, Func<Task<T>> func)
+        {
+            return cache.AddOrGetExistingAsync(key, func, DateTimeOffset.UtcNow.Add(duration), CacheRegion);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Meerkat.Security.Activities
 {
@@ -20,6 +21,11 @@ namespace Meerkat.Security.Activities
         public IList<Activity> Activities()
         {
             return activities;
+        }
+
+        public Task<IList<Activity>> ActivitiesAsync()
+        {
+            return Task.FromResult(Activities());
         }
 
         public string DefaultActivity()

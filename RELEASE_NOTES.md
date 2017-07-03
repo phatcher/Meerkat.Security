@@ -1,3 +1,6 @@
+### 2.2.3 (2017-06-13)
+* Extend IActivityProvider/IActivityAuthorizer with async methods
+
 ### 2.2.2 (2017-05-22)
 * Expose cache duration on CachingActivityProvider/CachingActivityAuthorizer
 * Build using Pdbgit to get linked sources

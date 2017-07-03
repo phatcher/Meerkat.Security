@@ -1,5 +1,7 @@
-﻿using System.Security.Principal;
+﻿using System.Collections.Generic;
+using System.Security.Principal;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using Meerkat.Logging;
 
@@ -46,13 +48,27 @@ namespace Meerkat.Security.Activities
         /// <copydoc cref="IActivityAuthorizer.IsAuthorized" />
         public AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal)
         {
+            var activities = provider.Activities();
+
+            return IsAuthorized(activities.ToDictionary(), resource, action, principal);
+        }
+
+        /// <copydoc cref="IActivityAuthorizer.IsAuthorizedAsync" />
+        public async Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal)
+        {
+            var activities = await provider.ActivitiesAsync().ConfigureAwait(false);
+
+            return IsAuthorized(activities.ToDictionary(), resource, action, principal);
+        }
+
+        private AuthorizationReason IsAuthorized(IDictionary<string, Activity> activities, string resource, string action, IPrincipal principal)
+        {
             // Get the state for this request
             var defaultAuthorization = provider.DefaultAuthorization() ?? DefaultAuthorization;
             var defaultActivity = provider.DefaultActivity() ?? DefaultActivity;
             var defaultAllowUnauthenticated = provider.DefaultAllowUnauthenticated() ?? DefaultAllowUnauthenticated;
-            var activities = provider.Activities().ToDictionary();
 
-             // Set up the reason
+            // Set up the reason
             var reason = new AuthorizationReason
             {
                 Resource = resource,
@@ -64,7 +80,7 @@ namespace Meerkat.Security.Activities
             };
 
             // Do a check for the unauthenticated state
-            if (defaultAllowUnauthenticated == false && principal.Identity.IsAuthenticated == false)
+            if (!defaultAllowUnauthenticated && !principal.Identity.IsAuthenticated)
             {
                 reason.IsAuthorized = false;
                 reason.Reason = "IsAuthenticated: false";

@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
+using Meerkat.Caching;
 using Meerkat.Security.Activities.Configuration;
 
 namespace Meerkat.Security.Activities
@@ -11,6 +14,33 @@ namespace Meerkat.Security.Activities
     /// </summary>
     public static class ActivityExtensions
     {
+
+        /// <summary>
+        /// Asynchronous lazy strongly-typed version of AddOrGetExisting which only invokes the function if the value is not present, 
+        /// and returns either the cache value or the newly created value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="cache"></param>
+        /// <param name="key"></param>
+        /// <param name="creator"></param>
+        /// <param name="absoluteExpiration"></param>
+        /// <param name="regionName"></param>
+        /// <returns>Returns either the value that exists or the value returns from the creator function</returns>
+        internal static async Task<T> AddOrGetExistingAsync<T>(this ICache cache, string key, Func<Task<T>> creator, DateTimeOffset absoluteExpiration, string regionName = null)
+        {
+            T value;
+            if (cache.Contains(key, regionName))
+            {
+                value = (T)cache.Get(key, regionName);
+            }
+            else
+            {
+                value = await creator().ConfigureAwait(false);
+                cache.Set(key, value, absoluteExpiration, regionName);
+            }
+            return value;
+        }
+
         /// <summary>
         /// Convert some <see cref="Activity"/> into a dictionary so we can search them
         /// </summary>
@@ -116,10 +146,10 @@ namespace Meerkat.Security.Activities
         /// <returns></returns>
         public static IEnumerable<Activity> FindActivities(this IDictionary<string, Activity> activities, string resource, string action, string defaultActivity)
         {
-            Activity value = null;
+            Activity value;
 
             // Find the closest activity match - resource centric
-            foreach (var activity in ActivityExtensions.Activities(resource, action))
+            foreach (var activity in Activities(resource, action))
             {
                 if (activities.TryGetValue(activity, out value))
                 {
@@ -127,13 +157,10 @@ namespace Meerkat.Security.Activities
                 }
             }
 
-            if (!string.IsNullOrEmpty(defaultActivity))
+            // Attempt to get the default activity.
+            if (!string.IsNullOrEmpty(defaultActivity) && activities.TryGetValue(defaultActivity, out value))
             {
-                // Attempt to get the default activity.
-                if (activities.TryGetValue(defaultActivity, out value))
-                {
-                    yield return value;
-                }
+                yield return value;
             }
         }
 

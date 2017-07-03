@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-
+using System.Threading.Tasks;
 using Meerkat.Security.Activities.Configuration;
 
 namespace Meerkat.Security.Activities
@@ -33,6 +33,12 @@ namespace Meerkat.Security.Activities
             }
 
             return activities;
+        }
+
+        /// <copydoc cref="IActivityProvider.ActivitiesAsync" />
+        public Task<IList<Activity>> ActivitiesAsync()
+        {
+            return Task.FromResult(Activities());
         }
 
         /// <copydoc cref="IActivityProvider.DefaultActivity" />
@@ -67,5 +73,6 @@ namespace Meerkat.Security.Activities
                 return null;
             }
         }
+
     }
 }
