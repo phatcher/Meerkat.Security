@@ -1,3 +1,6 @@
+### 2.2.4 (2017-09-14)
+* Fix ActivityLinkExtension to use IControllerActivityMapper
+
 ### 2.2.3 (2017-06-13)
 * Extend IActivityProvider/IActivityAuthorizer with async methods
 

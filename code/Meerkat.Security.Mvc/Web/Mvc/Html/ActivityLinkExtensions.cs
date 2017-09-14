@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 
 using Meerkat.Security.Activities;
+using Meerkat.Security.Web;
 
 namespace Meerkat.Web.Mvc.Html
 {
@@ -13,6 +14,7 @@ namespace Meerkat.Web.Mvc.Html
     public static class ActivityLinkExtensions
     {
         private static IActivityAuthorizer authorizer;
+        private static IControllerActivityMapper inferrer;
 
         public static IActivityAuthorizer Authorizer
         {
@@ -21,6 +23,12 @@ namespace Meerkat.Web.Mvc.Html
             set { authorizer = value; }
         }
 
+        public static IControllerActivityMapper Inferrer
+        {
+            // NB Not great, but avoids coupling this class to a specific IoC container.
+            get { return inferrer ?? (inferrer = DependencyResolver.Current.GetService<IControllerActivityMapper>()); }
+            set { inferrer = value; }
+        }
 
         /// <summary>
         /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
@@ -121,6 +129,12 @@ namespace Meerkat.Web.Mvc.Html
             // Get the controller
             var cn = !string.IsNullOrEmpty(controllerName) ? controllerName : htmlHelper.ViewContext.RequestContext.RouteData.Values["controller"].ToString();
 
+            // Now map to the underlying resource/action e.g. Details -> Read
+            var activity = Inferrer.Map(cn, actionName);
+            cn = activity.Item1;
+            actionName = activity.Item2;
+
+            // And ask the authorizer for its opinion.
             return Authorizer.IsAuthorized(cn, actionName, htmlHelper.ViewContext.HttpContext.User);
         }
     }
