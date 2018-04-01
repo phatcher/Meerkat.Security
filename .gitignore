@@ -9,8 +9,7 @@
 
 
 # Build results
-.fake/
-.sonarqube/
+.vs/
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
@@ -146,6 +145,12 @@ publish/
 *.[Pp]ublish.xml
 *.azurePubxml
 
+# Build tools/artifacts
+.fake/
+.paket/paket.exe
+paket.restore.targets
+packages/
+paket-files/
 
 # NuGet Packages Directory
 ## TODO: If you have NuGet Package Restore enabled, uncomment the next line
@@ -225,5 +230,3 @@ Desktop.ini
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
-/.paket/paket.exe
-/packages/build

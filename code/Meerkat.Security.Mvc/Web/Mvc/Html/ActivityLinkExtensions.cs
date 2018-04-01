@@ -124,6 +124,13 @@ namespace Meerkat.Web.Mvc.Html
                  : linkTextOnUnauthorized ? MvcHtmlString.Create(linkText) : MvcHtmlString.Empty;
         }
 
+        public static bool IsAuthorized(this HtmlHelper htmlHelper, string actionName, string controllerName)
+        {
+            var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName);
+
+            return reason.IsAuthorized;
+        }
+		
         public static AuthorizationReason LinkAuthorisationReason(this HtmlHelper htmlHelper, string actionName, string controllerName)
         {
             // Get the controller
