@@ -2,9 +2,6 @@
 {
     public class ClaimElementCollection : NamedConfigElementCollection<ClaimElement>
     {
-        protected override string ElementName
-        {
-            get { return "claim"; }
-        }
+        protected override string ElementName => "claim";
     }
 }

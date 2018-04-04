@@ -16,18 +16,24 @@ namespace Meerkat.Web.Mvc.Html
         private static IActivityAuthorizer authorizer;
         private static IControllerActivityMapper inferrer;
 
+        /// <summary>
+        /// Gets or sets the authorizer
+        /// </summary>
         public static IActivityAuthorizer Authorizer
         {
             // NB Not great, but avoids coupling this class to a specific IoC container.
-            get { return authorizer ?? (authorizer = DependencyResolver.Current.GetService<IActivityAuthorizer>()); }
-            set { authorizer = value; }
+            get => authorizer ?? (authorizer = DependencyResolver.Current.GetService<IActivityAuthorizer>());
+            set => authorizer = value;
         }
 
+        /// <summary>
+        /// Gets or sets the activity mapper.
+        /// </summary>
         public static IControllerActivityMapper Inferrer
         {
             // NB Not great, but avoids coupling this class to a specific IoC container.
-            get { return inferrer ?? (inferrer = DependencyResolver.Current.GetService<IControllerActivityMapper>()); }
-            set { inferrer = value; }
+            get => inferrer ?? (inferrer = DependencyResolver.Current.GetService<IControllerActivityMapper>());
+            set => inferrer = value;
         }
 
         /// <summary>
@@ -58,41 +64,111 @@ namespace Meerkat.Web.Mvc.Html
             return htmlHelper.ActivityActionLink(linkTextFunc(entity), actionName, controller, rvd, hto, linkTextOnUnauthorized);
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName)
         {
             return ActivityActionLink(htmlHelper, linkText, actionName, null /* controllerName */, new RouteValueDictionary(), new RouteValueDictionary());
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <param name="routeValues"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, object routeValues)
         {
             return ActivityActionLink(htmlHelper, linkText, actionName, null /* controllerName */, new RouteValueDictionary(routeValues), new RouteValueDictionary());
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <param name="routeValues"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, object routeValues, object htmlAttributes)
         {
             return ActivityActionLink(htmlHelper, linkText, actionName, null /* controllerName */, new RouteValueDictionary(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <param name="routeValues"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, RouteValueDictionary routeValues)
         {
             return ActivityActionLink(htmlHelper, linkText, actionName, null /* controllerName */, routeValues, new RouteValueDictionary());
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <param name="routeValues"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes)
         {
             return ActivityActionLink(htmlHelper, linkText, actionName, null /* controllerName */, routeValues, htmlAttributes);
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action 
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <param name="controllerName"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName)
         {
             return ActivityActionLink(htmlHelper, linkText, actionName, controllerName, new RouteValueDictionary(), new RouteValueDictionary());
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="routeValues"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, object routeValues, object htmlAttributes)
         {
             return ActivityActionLink(htmlHelper, linkText, actionName, controllerName, new RouteValueDictionary(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="routeValues"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <param name="linkTextOnUnauthorized"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, bool linkTextOnUnauthorized = false)
         {
             if (string.IsNullOrEmpty(linkText))
@@ -100,17 +176,44 @@ namespace Meerkat.Web.Mvc.Html
                 throw new ArgumentException("Null or empty", nameof(linkText));
             }
 
-            var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName);
+            var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName, routeValues);
             return reason.IsAuthorized 
                  ? MvcHtmlString.Create(HtmlHelper.GenerateLink(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection, linkText, null /* routeName */, actionName, controllerName, routeValues, htmlAttributes)) 
                  : linkTextOnUnauthorized ? MvcHtmlString.Create(linkText) : MvcHtmlString.Empty;
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="protocol"></param>
+        /// <param name="hostName"></param>
+        /// <param name="fragment"></param>
+        /// <param name="routeValues"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, string protocol, string hostName, string fragment, object routeValues, object htmlAttributes)
         {
             return ActivityActionLink(htmlHelper, linkText, actionName, controllerName, protocol, hostName, fragment, new RouteValueDictionary(routeValues), HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributes));
         }
 
+        /// <summary>
+        /// Generate a HTML link to a controller action, conditional on whether the user has the right to invoke the controller/action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="linkText"></param>
+        /// <param name="actionName"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="protocol"></param>
+        /// <param name="hostName"></param>
+        /// <param name="fragment"></param>
+        /// <param name="routeValues"></param>
+        /// <param name="htmlAttributes"></param>
+        /// <param name="linkTextOnUnauthorized"></param>
+        /// <returns></returns>
         public static MvcHtmlString ActivityActionLink(this HtmlHelper htmlHelper, string linkText, string actionName, string controllerName, string protocol, string hostName, string fragment, RouteValueDictionary routeValues, IDictionary<string, object> htmlAttributes, bool linkTextOnUnauthorized = false)
         {
             if (string.IsNullOrEmpty(linkText))
@@ -118,23 +221,61 @@ namespace Meerkat.Web.Mvc.Html
                 throw new ArgumentException("Null or empty", nameof(linkText));
             }
 
-            var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName);
+            var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName, routeValues);
             return reason.IsAuthorized
                  ? MvcHtmlString.Create(HtmlHelper.GenerateLink(htmlHelper.ViewContext.RequestContext, htmlHelper.RouteCollection, linkText, null /* routeName */, actionName, controllerName, protocol, hostName, fragment, routeValues, htmlAttributes))
                  : linkTextOnUnauthorized ? MvcHtmlString.Create(linkText) : MvcHtmlString.Empty;
         }
 
-        public static bool IsAuthorized(this HtmlHelper htmlHelper, string actionName, string controllerName)
+        /// <summary>
+        /// Determine whether a user is authorized for a controller action.
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="actionName"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static bool IsAuthorized(this HtmlHelper htmlHelper, string actionName, string controllerName, dynamic values = null)
         {
-            var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName);
+            // Flip from dynamic to dictionary
+            var properties = new RouteValueDictionary(values);
+
+            var reason = htmlHelper.LinkAuthorisationReason(actionName, controllerName, properties);
 
             return reason.IsAuthorized;
         }
-		
-        public static AuthorizationReason LinkAuthorisationReason(this HtmlHelper htmlHelper, string actionName, string controllerName)
+
+        /// <summary>
+        /// Detemine the <see cref="AuthorizationReason"/> for a controller action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="actionName"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static AuthorizationReason LinkAuthorisationReason(this HtmlHelper htmlHelper, string actionName, string controllerName, dynamic values = null)
+        {
+            // Flip from dynamic to dictionary
+            var properties = values == null ? new RouteValueDictionary() : new RouteValueDictionary(values);
+
+            return htmlHelper.LinkAuthorisationReason(actionName, controllerName, properties);
+        }
+
+        /// <summary>
+        /// Detemine the <see cref="AuthorizationReason"/> for a controller action
+        /// </summary>
+        /// <param name="htmlHelper"></param>
+        /// <param name="actionName"></param>
+        /// <param name="controllerName"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static AuthorizationReason LinkAuthorisationReason(this HtmlHelper htmlHelper, string actionName, string controllerName, IDictionary<string, object> values)
         {
             // Get the controller
             var cn = !string.IsNullOrEmpty(controllerName) ? controllerName : htmlHelper.ViewContext.RequestContext.RouteData.Values["controller"].ToString();
+
+            // Flip from dynamic to dictionary
+            var properties = new RouteValueDictionary(values);
 
             // Now map to the underlying resource/action e.g. Details -> Read
             var activity = Inferrer.Map(cn, actionName);
@@ -142,7 +283,7 @@ namespace Meerkat.Web.Mvc.Html
             actionName = activity.Item2;
 
             // And ask the authorizer for its opinion.
-            return Authorizer.IsAuthorized(cn, actionName, htmlHelper.ViewContext.HttpContext.User);
+            return Authorizer.IsAuthorized(cn, actionName, htmlHelper.ViewContext.HttpContext.User, properties);
         }
     }
 }

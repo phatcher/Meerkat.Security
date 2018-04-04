@@ -5,9 +5,11 @@
 // associated with an assembly.
 [assembly: AssemblyTitle("Meerkat Security WebAPI")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Meerkat Security")]
-[assembly: AssemblyCopyright("Copyright © Paul Hatcher 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif

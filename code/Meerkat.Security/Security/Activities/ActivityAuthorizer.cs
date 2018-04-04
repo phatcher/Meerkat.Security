@@ -46,7 +46,7 @@ namespace Meerkat.Security.Activities
         public string DefaultActivity { get; }
 
         /// <copydoc cref="IActivityAuthorizer.IsAuthorized" />
-        public AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal)
+        public AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null)
         {
             var activities = provider.Activities();
 
@@ -54,14 +54,14 @@ namespace Meerkat.Security.Activities
         }
 
         /// <copydoc cref="IActivityAuthorizer.IsAuthorizedAsync" />
-        public async Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal)
+        public async Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null)
         {
             var activities = await provider.ActivitiesAsync().ConfigureAwait(false);
 
             return IsAuthorized(activities.ToDictionary(), resource, action, principal);
         }
 
-        private AuthorizationReason IsAuthorized(IDictionary<string, Activity> activities, string resource, string action, IPrincipal principal)
+        private AuthorizationReason IsAuthorized(IDictionary<string, Activity> activities, string resource, string action, IPrincipal principal, IDictionary<string, object> values = null)
         {
             // Get the state for this request
             var defaultAuthorization = provider.DefaultAuthorization() ?? DefaultAuthorization;
@@ -90,23 +90,29 @@ namespace Meerkat.Security.Activities
             foreach (var activity in activities.FindActivities(resource, action, defaultActivity))
             {
                 var rs = principal.IsAuthorized(activity, defaultAuthorization);
-                if (rs.NoDecision == false)
+                if (rs.NoDecision)
                 {
-                    // Ok, we have a decision
-                    reason.IsAuthorized = rs.IsAuthorized;
-                    if (reason.Resource != rs.Resource || reason.Action != rs.Action)
-                    {
-                        // Decided based on some other activity, so say what that was
-                        reason.PrincipalReason = rs;
-                    }
-                    else
-                    {
-                        // Preserve the reason information
-                        reason.Reason = rs.Reason;
-                    }
-
-                    break;
+                    // Try the next one
+                    continue;
                 }
+
+                // Ok, we have a decision
+                reason.IsAuthorized = rs.IsAuthorized;
+                reason.Identity = rs.Identity;
+
+                if (reason.Resource != rs.Resource || reason.Action != rs.Action)
+                {
+                    // Decided based on some other activity, so say what that was
+                    reason.PrincipalReason = rs;
+                }
+                else
+                {
+                    // Preserve the reason information
+                    reason.Reason = rs.Reason;
+                }
+
+                // We are done as we have a decision
+                break;
             }
 
             if (!reason.IsAuthorized)

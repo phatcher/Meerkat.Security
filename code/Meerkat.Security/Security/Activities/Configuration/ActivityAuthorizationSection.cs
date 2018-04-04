@@ -13,8 +13,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("authorized", DefaultValue = false, IsRequired = false, IsKey = false)]
         public bool Default
         {
-            get { return (bool)base["authorized"]; }
-            set { base["authorized"] = value; }
+            get => (bool)base["authorized"];
+            set => base["authorized"] = value;
         }
 
         /// <summary>
@@ -23,8 +23,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("allowUnauthenticated", IsRequired = false, IsKey = false)]
         public bool? DefaultAllowUnauthenticated
         {
-            get { return (bool?)base["allowUnauthenticated"]; }
-            set { base["allowUnauthenticated"] = value; }
+            get => (bool?)base["allowUnauthenticated"];
+            set => base["allowUnauthenticated"] = value;
         }
 
         /// <summary>
@@ -33,8 +33,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("defaultActivity", DefaultValue = null, IsRequired = false, IsKey = false)]
         public string DefaultActivity
         {
-            get { return (string)base["defaultActivity"]; }
-            set { base["defaultActivity"] = value; }
+            get => (string)base["defaultActivity"];
+            set => base["defaultActivity"] = value;
         }
 
         /// <summary>
@@ -43,8 +43,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("", IsDefaultCollection = true, IsKey = false, IsRequired = true)]
         public ActivityElementCollection Activities
         {
-            get { return (ActivityElementCollection)this[""]; }
-            set { this[""] = value; }
+            get => (ActivityElementCollection)this[""];
+            set => this[""] = value;
         }
     }
 }

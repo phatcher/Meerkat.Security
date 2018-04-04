@@ -10,8 +10,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("issuer", IsRequired = false, IsKey = false)]
         public string Issuer
         {
-            get { return this["issuer"] as string; }
-            set { this["issuer"] = value; }
+            get => this["issuer"] as string;
+            set => this["issuer"] = value;
         }
 
         /// <summary>
@@ -20,8 +20,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("values", IsRequired = true, IsKey = false)]
         public string Claims
         {
-            get { return this["values"] as string; }
-            set { this["values"] = value; }
+            get => this["values"] as string;
+            set => this["values"] = value;
         }
     }
 }

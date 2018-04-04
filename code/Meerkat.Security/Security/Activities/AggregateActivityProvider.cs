@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Meerkat.Security.Activities
@@ -10,6 +11,10 @@ namespace Meerkat.Security.Activities
     {
         private readonly IList<IActivityProvider> providers;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="AggregateActivityProvider"/> class.
+        /// </summary>
+        /// <param name="providers"></param>
         public AggregateActivityProvider(IActivityProvider[] providers)
         {
             this.providers = new List<IActivityProvider>(providers);
@@ -28,14 +33,21 @@ namespace Meerkat.Security.Activities
             return activities;
         }
 
+        /// <copydoc cref="IActivityProvider.ActivitiesAsync" />
+        /// <remarks>Can potentially return duplicate <see cref="Activity"> if multiple providers supply the same activity</see></remarks>
         public async Task<IList<Activity>> ActivitiesAsync()
         {
+            // Kick them all off
+            var tasks = providers.Select(provider => provider.ActivitiesAsync()).ToList();
+
+            // Wait to finish
+            var results = await Task.WhenAll(tasks).ConfigureAwait(false);
+
+            // Now aggregate them
             var activities = new List<Activity>();
-            // TODO: We could do the lot and WaitAll?
-            foreach (var provider in providers)
+            foreach (var result in results)
             {
-                var x = await provider.ActivitiesAsync().ConfigureAwait(false);
-                activities.AddRange(x);
+                activities.AddRange(result);
             }
 
             return activities;
@@ -91,6 +103,5 @@ namespace Meerkat.Security.Activities
 
             return defaultAuthorization;
         }
-
     }
 }

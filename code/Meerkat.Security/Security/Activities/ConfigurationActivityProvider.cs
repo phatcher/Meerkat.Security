@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Threading.Tasks;
+
 using Meerkat.Security.Activities.Configuration;
 
 namespace Meerkat.Security.Activities
@@ -45,21 +46,21 @@ namespace Meerkat.Security.Activities
         /// <remarks>Returns the <see cref="ActivityAuthorizationSection.DefaultActivity"/> value.</remarks>
         public string DefaultActivity()
         {
-            return section != null ? section.DefaultActivity : null;
+            return section?.DefaultActivity;
         }
 
         /// <copydoc cref="IActivityProvider.DefaultAllowUnauthenticated" />
         /// <remarks>Returns the <see cref="ActivityAuthorizationSection.DefaultAllowUnauthenticated"/> value.</remarks>
         public bool? DefaultAllowUnauthenticated()
         {
-            return section != null ? section.DefaultAllowUnauthenticated : null;
+            return section?.DefaultAllowUnauthenticated;
         }
 
         /// <copydoc cref="IActivityProvider.DefaultAuthorization" />
         /// <remarks>Returns the <see cref="ActivityAuthorizationSection.Default"/> value.</remarks>
         public bool? DefaultAuthorization()
         {
-            return section != null ? (bool?)section.Default : null;
+            return section?.Default;
         }
 
         private ActivityAuthorizationSection ActivitySection(string name)
@@ -73,6 +74,5 @@ namespace Meerkat.Security.Activities
                 return null;
             }
         }
-
     }
 }

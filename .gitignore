@@ -18,7 +18,7 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
-
+.sonarqube/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -70,6 +70,7 @@ _Chutzpah*
 ipch/
 *.aps
 *.ncb
+*.opendb
 *.opensdf
 *.sdf
 *.cachefile

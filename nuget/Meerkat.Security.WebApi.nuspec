@@ -3,24 +3,7 @@
     <metadata>
         <id>Meerkat.Security.WebApi</id>
         <title>Meerkat Security WebApi</title>
-        <description>An activity based security framework for ASP.NET WebApi</description>
         <version>1.0.0</version>
-        <licenseUrl>http://opensource.org/licenses/mit-license.php</licenseUrl>
-        <copyright>Copyright © 2016 Paul Hatcher</copyright>
         <owners>Paul Hatcher</owners>
-        <authors>Paul Hatcher</authors>
-        <projectUrl>https://github.com/phatcher/Meerkat.Security</projectUrl>
-        <releaseNotes>@releaseNotes@</releaseNotes>
-        <tags>AspNetWebApi WebApi Security</tags>
-        <dependencies>
-            <dependency id="Meerkat.Logging" version="1.0.2" />
-            <dependency id="Meerkat.Security" version="2.2.1" />
-        </dependencies>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
     </metadata>
-    <files>
-        <file src="..\build\Meerkat.Security.WebApi.dll" target="lib\net45" />
-        <file src="..\build\Meerkat.Security.WebApi.pdb" target="lib\net45" />
-        <file src="..\build\Meerkat.Security.WebApi.xml" target="lib\net45" />
-    </files>
 </package>

@@ -14,7 +14,6 @@ namespace Meerkat.Security.Activities
     /// </summary>
     public static class ActivityExtensions
     {
-
         /// <summary>
         /// Asynchronous lazy strongly-typed version of AddOrGetExisting which only invokes the function if the value is not present, 
         /// and returns either the cache value or the newly created value.
