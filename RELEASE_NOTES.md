@@ -1,3 +1,10 @@
+### 3.0.0 (2018-04-03)
+* Target net45 and netstandard2.0 where appropriate
+* Introduce json serialization for configuration
+
+### 2.2.4 (2017-09-14)
+* Fix ActivityLinkExtension to use IControllerActivityMapper
+
 ### 2.2.3 (2017-06-13)
 * Extend IActivityProvider/IActivityAuthorizer with async methods
 

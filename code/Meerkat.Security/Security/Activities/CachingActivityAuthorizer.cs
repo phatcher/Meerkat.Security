@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -29,18 +30,21 @@ namespace Meerkat.Security.Activities
         }
 
         /// <copydoc cref="IActivityAuthorizer.IsAuthorized" />
-        public AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal)
+        public AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null)
         {
-            return cache.AddOrGetExisting(Key(resource, action, principal), () => authorizer.IsAuthorized(resource, action, principal), DateTimeOffset.UtcNow.Add(duration), "authorizer");
+            // TODO: Use AuthorizationReason.Expiry to influence cache duration
+            return cache.AddOrGetExisting(Key(resource, action, principal, values), () => authorizer.IsAuthorized(resource, action, principal, values), DateTimeOffset.UtcNow.Add(duration), "authorizer");
         }
 
-        public async Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal)
+        public async Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null)
         {
-            return await cache.AddOrGetExistingAsync(Key(resource, action, principal), async () => await authorizer.IsAuthorizedAsync(resource, action, principal).ConfigureAwait(false), DateTimeOffset.UtcNow.Add(duration), "authorizer").ConfigureAwait(false);
+            // TODO: Use AuthorizationReason.Expiry to influence cache duration
+            return await cache.AddOrGetExistingAsync(Key(resource, action, principal, values), async () => await authorizer.IsAuthorizedAsync(resource, action, principal, values).ConfigureAwait(false), DateTimeOffset.UtcNow.Add(duration), "authorizer").ConfigureAwait(false);
         }
 
-        private string Key(string resource, string action, IPrincipal principal)
+        private string Key(string resource, string action, IPrincipal principal, IDictionary<string, object> values)
         {
+            // TODO: Work out how we include values in the key or if we need to
             return $"{resource}.{action}:{principal}";
         }
     }

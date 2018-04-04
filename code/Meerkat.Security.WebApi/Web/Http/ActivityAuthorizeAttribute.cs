@@ -55,10 +55,7 @@ namespace Meerkat.Security.Web.Http
         /// Get a unique identifier for this <see cref="Attribute"/>
         /// </summary>
         /// <returns>The unique identifier for the attribute.</returns>
-        public override object TypeId
-        {
-            get { return typeId; }
-        }
+        public override object TypeId => typeId;
 
         /// <summary>
         /// Determines whether access for this particular <paramref name="actionContext"/> is authorized. This method uses te user

@@ -17,8 +17,8 @@ namespace Meerkat.Security.Activities
         /// </summary>
         public IList<Claim> Claims
         {
-            get { return claims ?? (claims = new List<Claim>()); }
-            set { claims = value; }
+            get => claims ?? (claims = new List<Claim>());
+            set => claims = value;
         }
 
         /// <summary>
@@ -26,8 +26,8 @@ namespace Meerkat.Security.Activities
         /// </summary>
         public IList<string> Users
         {
-            get { return users ?? (users = new List<string>()); }
-            set { users = value; }
+            get => users ?? (users = new List<string>());
+            set => users = value;
         }
 
         /// <summary>
@@ -35,8 +35,13 @@ namespace Meerkat.Security.Activities
         /// </summary>
         public IList<string> Roles
         {
-            get { return roles ?? (roles = new List<string>()); }
-            set { roles = value; }
+            get => roles ?? (roles = new List<string>());
+            set => roles = value;
+        }
+
+        internal bool IsEmpty()
+        {
+            return Claims.Count == 0 && Users.Count == 0 && Roles.Count == 0;
         }
     }
 }

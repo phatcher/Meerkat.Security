@@ -43,20 +43,31 @@ namespace Meerkat.Web.Mvc
         /// </summary>
         public string RedirectUrl { get; set; }
 
+        /// <summary>
+        /// Gets or sets the authorizer.
+        /// </summary>
         public IActivityAuthorizer Authorizer
         {
             // NB Not great, but avoids coupling this class to a specific IoC container.
-            get { return authorizer ?? (authorizer = DependencyResolver.Current.GetService<IActivityAuthorizer>()); }
-            set { authorizer = value; }
+            get => authorizer ?? (authorizer = DependencyResolver.Current.GetService<IActivityAuthorizer>());
+            set => authorizer = value;
         }
 
+        /// <summary>
+        /// Gets or sets the controller mapper
+        /// </summary>
         public IControllerActivityMapper Inferrer
         {
             // NB Not great, but avoids coupling this class to a specific IoC container.
-            get { return inferrer ?? (inferrer = DependencyResolver.Current.GetService<IControllerActivityMapper>()); }
-            set { inferrer = value; }
+            get => inferrer ?? (inferrer = DependencyResolver.Current.GetService<IControllerActivityMapper>());
+            set => inferrer = value;
         }
 
+        /// <summary>
+        /// Overrides the base authorization action to check for permission on the controller action
+        /// </summary>
+        /// <param name="httpContext"></param>
+        /// <returns></returns>
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             if (httpContext == null)
@@ -105,6 +116,7 @@ namespace Meerkat.Web.Mvc
                 }
 
                 // Now check if we are authorised
+                // TODO: Pass the rest of the route data as a dictionary.
                 var reason = Authorizer.IsAuthorized(resource, action, principal);
 
                 Logger.DebugFormat("Authorizing {0}/{1} ({4}.{5}) for '{2}': {3}", controller, controllerAction, principal.Identity.Name, reason.IsAuthorized, resource, action);

@@ -22,8 +22,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("name", IsRequired = true, IsKey = true)]
         public virtual string Name
         {
-            get { return (string)this["name"]; }
-            set { this["name"] = value; }
+            get => (string)this["name"];
+            set => this["name"] = value;
         }
     }
 }

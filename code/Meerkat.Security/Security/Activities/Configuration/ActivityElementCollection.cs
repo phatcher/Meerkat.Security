@@ -2,9 +2,6 @@
 {
     public class ActivityElementCollection : NamedConfigElementCollection<ActivityElement>
     {
-        protected override string ElementName
-        {
-            get { return "activity"; }
-        }
+        protected override string ElementName => "activity";
     }
 }

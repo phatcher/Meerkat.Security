@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 namespace Meerkat.Security.Activities
 {
     /// <summary>
-    /// Locates the activities that are available to be secured.
+    /// Provides activities to be secured.
     /// </summary>
     public interface IActivityProvider
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
 using Meerkat.Caching;
 
 namespace Meerkat.Security.Activities
@@ -36,6 +37,7 @@ namespace Meerkat.Security.Activities
         }
 
 
+        /// <copydoc cref="IActivityProvider.Activities" />
         public async Task<IList<Activity>> ActivitiesAsync()
         {
             return await AddOrGetExistingAsync("activities", async () => await provider.ActivitiesAsync().ConfigureAwait(false)).ConfigureAwait(false);

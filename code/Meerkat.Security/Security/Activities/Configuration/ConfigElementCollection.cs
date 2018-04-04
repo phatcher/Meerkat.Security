@@ -10,17 +10,11 @@ namespace Meerkat.Security.Activities.Configuration
     public abstract class ConfigElementCollection<T> : ConfigurationElementCollection, IList<T>
         where T : ConfigurationElement, new()
     {
-        public override ConfigurationElementCollectionType CollectionType
-        {
-            get { return ConfigurationElementCollectionType.BasicMap; }
-        }
+        public override ConfigurationElementCollectionType CollectionType => ConfigurationElementCollectionType.BasicMap;
 
         public T this[int index]
         {
-            get
-            {
-                return (T)BaseGet(index);
-            }
+            get => (T)BaseGet(index);
 
             set
             {
@@ -33,10 +27,7 @@ namespace Meerkat.Security.Activities.Configuration
             }
         }
 
-        public new T this[string key]
-        {
-            get { return (T)BaseGet(key); }
-        }
+        public new T this[string key] => (T)BaseGet(key);
 
         public int IndexOf(T element)
         {
@@ -94,10 +85,7 @@ namespace Meerkat.Security.Activities.Configuration
             throw new System.NotImplementedException();
         }
 
-        public new bool IsReadOnly
-        {
-            get { throw new System.NotImplementedException(); }
-        }
+        public new bool IsReadOnly => throw new System.NotImplementedException();
 
         bool ICollection<T>.Remove(T item)
         {

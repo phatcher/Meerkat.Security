@@ -1,5 +1,8 @@
 ﻿namespace Meerkat.Security.Activities
 {
+    /// <summary>
+    /// An activity is secured action against a resource and may be allowed or denied.
+    /// </summary>
     public class Activity
     {
         private Permission allow;
@@ -19,12 +22,12 @@
         }
 
         /// <summary>
-        /// Get or set the Resource name.
+        /// Get or set the resource name.
         /// </summary>
         public string Resource { get; set; }
 
         /// <summary>
-        /// Get or set the Action name.
+        /// Get or set the action name.
         /// </summary>
         public string Action { get; set; }
 
@@ -43,8 +46,8 @@
         /// </summary>
         public Permission Allow
         {
-            get { return allow ?? (allow = new Permission()); }
-            set { allow = value; }
+            get => allow ?? (allow = new Permission());
+            set => allow = value;
         }
 
         /// <summary>
@@ -52,8 +55,8 @@
         /// </summary>
         public Permission Deny
         {
-            get { return deny ?? (deny = new Permission()); }
-            set { deny = value; }
+            get => deny ?? (deny = new Permission());
+            set => deny = value;
         }
 
         public override string ToString()

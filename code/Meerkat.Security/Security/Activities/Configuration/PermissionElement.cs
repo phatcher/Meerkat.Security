@@ -10,8 +10,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("roles", IsRequired = false, IsKey = false)]
         public string Roles
         {
-            get { return this["roles"] as string; }
-            set { this["roles"] = value; }
+            get => this["roles"] as string;
+            set => this["roles"] = value;
         }
 
         /// <summary>
@@ -20,8 +20,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("users", IsRequired = false, IsKey = false)]
         public string Users
         {
-            get { return this["users"] as string; }
-            set { this["users"] = value; }
+            get => this["users"] as string;
+            set => this["users"] = value;
         }
 
         /// <summary>
@@ -30,8 +30,8 @@ namespace Meerkat.Security.Activities.Configuration
         [ConfigurationProperty("", IsDefaultCollection = true, IsKey = false, IsRequired = true)]
         public ClaimElementCollection Claims
         {
-            get { return (ClaimElementCollection)this[""]; }
-            set { this[""] = value; }
+            get => (ClaimElementCollection)this[""];
+            set => this[""] = value;
         }
     }
 }

@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 
 namespace Meerkat.Security.Activities
 {
+    /// <summary>
+    /// Implementation of <see cref="IActivityProvider"/> that is initialized statically.
+    /// </summary>
     public class StaticActivityProvider : IActivityProvider
     {
         private readonly IList<Activity> activities;
@@ -18,26 +21,31 @@ namespace Meerkat.Security.Activities
             this.defaultAllowUnauthenticated = defaultAllowUnauthenticated;
         }
 
+        /// <copydoc cref="IActivityProvider.Activities" />
         public IList<Activity> Activities()
         {
             return activities;
         }
 
+        /// <copydoc cref="IActivityProvider.ActivitiesAsync" />
         public Task<IList<Activity>> ActivitiesAsync()
         {
             return Task.FromResult(Activities());
         }
 
+        /// <copydoc cref="IActivityProvider.DefaultActivity" />
         public string DefaultActivity()
         {
             return defaultActivity;
         }
 
+        /// <copydoc cref="IActivityProvider.DefaultAllowUnauthenticated" />
         public bool? DefaultAllowUnauthenticated()
         {
             return defaultAllowUnauthenticated;
         }
 
+        /// <copydoc cref="IActivityProvider.DefaultAuthorization" />
         public bool? DefaultAuthorization()
         {
             return defaultAuthorization;
