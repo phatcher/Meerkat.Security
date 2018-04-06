@@ -45,12 +45,12 @@ Here we cover off the key building blocks of the framework
 ## Security Models
 
 There are four classic models of access control: 
-* Discrectionary Access Control (DAC): Control based on restricting access based on the identity of subjects and/or groups to which they belong. The controls are discretionary in the sense
+* **Discrectionary Access Control (DAC)**: Control based on restricting access based on the identity of subjects and/or groups to which they belong. The controls are discretionary in the sense
 that a subject with certain access permission is capable of passing that permission on to any other subject.
-* Mandatory Access Control (MAC): Any operation by any subject on any object is tested against the set of authorization rules (aka policy) to determine if the operation is allowed. The ability
+* **Mandatory Access Control (MAC)**: Any operation by any subject on any object is tested against the set of authorization rules (aka policy) to determine if the operation is allowed. The ability
 to grant permissions itself comes under MAC and this distinguishes it from the simpler DAC model.
-* Role Based Acccess Control (RBAC): This is a policy neutral access control mechanism around roles and permissions and although different from DAC and MAC can easily be used to enforce such constraints
-* Attribute Based Access Control (ABAC): This evolved from RBAC to consider additional attribute of either the subject or secured resource in addition to roles and groups and is policy-based in the sense that
+* **Role Based Acccess Control (RBAC)**: This is a policy neutral access control mechanism around roles and permissions and although different from DAC and MAC can easily be used to enforce such constraints
+* **Attribute Based Access Control (ABAC)**: This evolved from RBAC to consider additional attribute of either the subject or secured resource in addition to roles and groups and is policy-based in the sense that
 it uses policies rather than static permissions to define what is authorized.
 
 This framework is most closely aligned to RBAC but has some ABAC capabilities as well, e.g. you can secure an operation based on additional attributes about the subject and also use [hierarchies](#hierarchies)
@@ -65,10 +65,10 @@ database access to know who can edit this particular order and so it out of scop
 Most developers are aware that .NET processes execute under a user context called a Principal, this is easily accessed via Thread.CurrentPrincipal or in a web application via the controllers User property. Since .NET 4.5 
 these are all ClaimsPrincipals which can contain multiple ClaimsIdentities each holding Claims. A claim is a security attribute with some basic properties...
 
-* Type: The type of claim, e.g. Role, Name, Team, Age
-* Value: The value of the claim, e.g. Admin, 18, Team A
-* Issuer: Who says this claim is true, can be important to ensure the integrity of the system
-* ValueType: What type of data is the claim, default is string but can be any type e.g. integer, date
+* **Type**: The type of claim, e.g. Role, Name, Team, Age
+* **Value**: The value of the claim, e.g. Admin, 18, Team A
+* **Issuer**: Who says this claim is true, can be important to ensure the integrity of the system
+* **ValueType**: What type of data is the claim, default is string but can be any type e.g. integer, date
 
 In this model, roles and the user's name are not anything special, just particular types of claim.
 
@@ -77,16 +77,16 @@ process called claims transformation which happens as part of the ASP.NET pipeli
 
 ## Resources and Activities
 
-A lot of examples of securing .NET applications show security against activities such as "CreateUser" and "UpdateUser" and one issue I have with this is that the number of securable items can grow very rapidly e.g.
+A lot of examples of securing .NET applications show security against activities such as **_CreateUser_** and **_UpdateUser_** and one issue I have with this is that the number of securable items can grow very rapidly e.g.
 in a fairly small system of 20 resource types with just CRUD operations you have 80 securable items and this quite rapidly becomes difficult to manage. This project took a slightly different perspective akin to how REST models things
 and explicitly separated the resource from the activity that is being secured.
 
-This allows you to define granular but wide-ranging permissions e.g. grant "Delete" permission to the "Admin" role on all resources or grant all permissions on "Order" to the "SalesClerk" role.
+This allows you to define granular but wide-ranging permissions e.g. grant **_Delete_** permission to the **_Admin_** role on all resources or grant all permissions on **_Order_** to the **_SalesClerk_** role.
 
 ## Grant vs Deny Permissions
 
-One concept that simplifies security maintenance is the concept of Deny permissions which take precedence over any Grant.  For example, your normal sales clerk Alice is off for the say so you grant Bob the SalesClerk role, but
-you don't want him to be able to do too much damage so you also say Bob Deny "Order.Delete", now this Deny permission for Bob will take precedence over the SalesClerk's standard permissions to be able to do anything to an Order.
+One concept that simplifies security maintenance is the concept of Deny permissions which take precedence over any Grant.  For example, your normal sales clerk Alice is off for the say so you grant Bob the **_SalesClerk_** role, but
+you don't want him to be able to do too much damage so you also say Bob Deny **_Order.Delete_**, now this Deny permission for Bob will take precedence over the **_SalesClerk_**'s standard permissions to be able to do anything to an Order.
 
 # Defining the security model
 
@@ -98,21 +98,21 @@ be intentional rather than accidental.
 
 Lets take a simple business model
 
-* Orders: Orders placed in the system
-* Invoices: Invoiced orders
-* Sales clerk: Enters/amends orders in the system
-* Invoice clerk: Processes invoices
-* Sales manager: Supervises sales clerks
-* Finance manager: Supervises invoice clerks
-* Finance Director: Supervises managers
+* **Orders**: Orders placed in the system
+* **Invoices**: Invoiced orders
+* **Sales Clerk**: Enters/amends orders in the system
+* **Invoice Clerk**: Processes invoices
+* **Sales Manager**: Supervises sales clerks
+* **Finance Manager**: Supervises invoice clerks
+* **Finance Director**: Supervises managers
 
 So what we want to implemnt is the following
 
-* Sales Clerk: Can read, create, amend, ship and cancel Orders but can't delete them, has no rights to Invoices
-* Sales Manager: Can read, ship and cancel Orders but can only read Invoices
-* Invoice Clerk: Can read, create, amend and cancel Invoices but not approve or delete them, has no rights on Orders
-* Finance Manger: Can read, approve or cancel Invoices but only read Orders
-* Finance Director: Can read and delete Orders and Invoices but has no rights to create, amend or approve
+* **Sales Clerk**: Can read, create, amend, ship and cancel Orders but can't delete them, has no rights to Invoices
+* **Sales Manager**: Can read, ship and cancel Orders but can only read Invoices
+* **Invoice Clerk**: Can read, create, amend and cancel Invoices but not approve or delete them, has no rights on Orders
+* **Finance Manger**: Can read, approve or cancel Invoices but only read Orders
+* **Finance Director**: Can read and delete Orders and Invoices but has no rights to create, amend or approve
 
 This gives a reasonable separation of powers where it requires at least two actors to colude to create an order, raise an invoice and get it approved.
 
@@ -120,7 +120,7 @@ This can be represented in the following table, blank nodes means no rights
 
 |          | Role     | SC | SM | IC | FM | FD |
 | Resource | Activity |    |    |    |    |    |
-| -------- | -------- | -- | -- | -- | -- | -- |
+| -------- | -------- | --- | --- | --- | --- | --- |
 | Order    | Read     | x  | x  |    | x  | x  |
 | Order    | Create   | x  |    |    |    |    |
 | Order    | Edit     | x  |    |    |    |    |
@@ -186,10 +186,10 @@ This allow us to define wider rules and then pare them back with exclusions e.g.
             <allow roles="FinanceManager" />
         </activity>
 
-This grants all activities on Invoice to the InvoiceClerk, but then specifically disallows them from Approve whilst granting that right to the FinanceManager.
+This grants all activities on **_Invoice_** to the **_InvoiceClerk_**, but then specifically disallows them from Approve whilst granting that right to the **_FinanceManager_**.
 
 One general principle is not to have hierarchies of roles, if you do so it makes it much more difficult to see the implications of changes to the security model and can lead to inadvertant breaches
-of seperation of concern rules. For example, if instead of explicitly denoting a FinanceDirector's permissions we also said that they also inherit the other roles, then a bad actor could create an order, invoice
+of seperation of concern rules. For example, if instead of explicitly denoting a **_FinanceDirector's_** permissions we also said that they also inherit the other roles, then a bad actor could create an order, invoice
 it and approve it without the security model complainsing.
 
 ## Hierarchies
@@ -210,13 +210,11 @@ to apply, and this first one to make a decision is the one applied. For example 
 
 This says that all authenticated users are allow to print reports, but only Sales are allowed to print Sales reports and only HR are allowed to print Employee reports.
 
-So if we ask to authorize "Reports/Sales.Print" the following activtiies would be considered in this order
+So if we ask to authorize **_Reports/Sales.Print_** the following activtiies would be considered in this order
 
-Reports/Sales.Print
-Reports.Print
-.Print
+Reports/Sales.Print -> Reports.Print -> .Print
 
-By using 'authorized="false"' at the sublevels we are forcing the decision to be evaluation there, otherwise it would bubble up to "Reports.Print". The other alternative is to use Deny permissions but this can
+By using 'authorized="false"' at the sublevels we are forcing the decision to be evaluated there, otherwise it would bubble up to **_Reports.Print_**. The other alternative is to use Deny permissions but this can
 get tricky as a Deny is an immediate block on further evaluation, e.g. given
 
        <activity name="Reports.Print">
@@ -238,5 +236,5 @@ get this overall group by virtue of them being authenticated and you can include
 
 To use the hiearchies effectively you might need to make more than one call to the authorization system...
 
-* A employee MVC controller is secured with "Employee.Read" but you do an additional check on "Employee/Salary.Read" before returning that data.
-* The top level Reports link might be secured with "Reports.Print" but a particular report might be secured with "Reports/Salary.Print".
+* A employee MVC controller is secured with **_Employee.Read_** but you do an additional check on **_Employee/Salary.Read_** before returning that data.
+* The top level Reports link might be secured with **_Reports.Print_** but a particular report might be secured with **_Reports/Salary.Print_**.
