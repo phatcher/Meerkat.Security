@@ -56,8 +56,8 @@ it uses policies rather than static permissions to define what is authorized.
 This framework is most closely aligned to RBAC but has some ABAC capabilities as well, e.g. you can secure an operation based on additional attributes about the subject and also use [hierarchies](#hierarchies)
 to implement more fine-grained permissions. 
 
-The main advantage of the framework is its speed since operations will take place in memory, and this leads us to its main limitation in that it is intended to secure activities on the class
-of the resource rather than individual resources i.e. we can easily secure Order.Create or Order.Edit to a role SalesClerk but restricting editing of Order 231 for example would require domain knowledge and/or 
+The main advantage of the framework is its ease of implementation and speed since operations will take place in memory, and this leads us to its main limitation in that it is intended to secure activities on the class
+of the resource rather than individual resources i.e. we can easily secure **_Order.Create_** or **_Order.Edit_** to a role **_SalesClerk_** but restricting editing of **_Order 231_** for example would require domain knowledge and/or 
 database access to know who can edit this particular order and so it out of scope.
 
 ## Principals and Claims
@@ -186,7 +186,7 @@ This allow us to define wider rules and then pare them back with exclusions e.g.
             <allow roles="FinanceManager" />
         </activity>
 
-This grants all activities on **_Invoice_** to the **_InvoiceClerk_**, but then specifically disallows them from Approve whilst granting that right to the **_FinanceManager_**.
+This grants all activities on **_Invoice_** to the **_InvoiceClerk_**, but then specifically disallows them from **_Approve_** whilst granting that right to the **_FinanceManager_**.
 
 One general principle is not to have hierarchies of roles, if you do so it makes it much more difficult to see the implications of changes to the security model and can lead to inadvertant breaches
 of seperation of concern rules. For example, if instead of explicitly denoting a **_FinanceDirector's_** permissions we also said that they also inherit the other roles, then a bad actor could create an order, invoice
@@ -229,7 +229,7 @@ get tricky as a Deny is an immediate block on further evaluation, e.g. given
            <allow roles="HR" />
        </activity>
 
-The problem is if you make a HR user a member of Users, they would be locked out of their reports due to the Deny taking precedence. This also brings up a good point of generally avoiding groups such as "Users"; we effectively
+The problem is if you make a HR user a member of Users, they would be locked out of their reports due to the Deny taking precedence. This also brings up a good point of generally avoiding groups such as **_Users_**. We effectively
 get this overall group by virtue of them being authenticated and you can include everyone with for an activity with a 'authorized="true"' clause or even 'allowUnauthenticated="true"', for example one standard entry I have in most security files is
 
     <activity name="Home.Index" authorized="true" allowUnauthenticated="true" />
