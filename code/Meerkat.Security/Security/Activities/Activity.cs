@@ -1,4 +1,6 @@
-﻿namespace Meerkat.Security.Activities
+﻿using Newtonsoft.Json;
+
+namespace Meerkat.Security.Activities
 {
     /// <summary>
     /// An activity is secured action against a resource and may be allowed or denied.
@@ -39,6 +41,7 @@
         /// <summary>
         /// Gets or sets the default authorization.
         /// </summary>
+        [JsonProperty("Authorized")]
         public bool? Default { get; set; }
 
         /// <summary>

@@ -7,6 +7,13 @@ namespace Meerkat.Security.Activities.Configuration
     /// </summary>
     public class ActivityAuthorizationSection : ConfigurationSection
     {
+        [ConfigurationProperty("name", DefaultValue = null, IsRequired = false, IsKey = false)]
+        public string Name
+        {
+            get => (string)base["name"];
+            set => base["name"] = value;
+        }
+
         /// <summary>
         /// Default authorization behaviour for the section (default: false).
         /// </summary>

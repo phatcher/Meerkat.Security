@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Principal;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Meerkat.Logging;
@@ -12,18 +13,18 @@ namespace Meerkat.Security.Activities
     {
         private static readonly ILog Logger = LogProvider.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        private readonly IActivityProvider provider;
+        private readonly IAuthorizationScopeProvider scopeProvider;
 
         /// <summary>
         /// Creates a new instance of the <see cref="ActivityAuthorizer"/> class.
         /// </summary>
-        /// <param name="provider"></param>
-        /// <param name="authorized"></param>
-        /// <param name="defaultActivity"></param>
-        /// <param name="allowUnauthenticated"></param>
-        public ActivityAuthorizer(IActivityProvider provider, bool authorized, string defaultActivity = null, bool allowUnauthenticated = false)
+        /// <param name="scopeProvider">Scope provider to use</param>
+        /// <param name="authorized">Default authorization value</param>
+        /// <param name="defaultActivity">Default activity</param>
+        /// <param name="allowUnauthenticated">Whether to allow unauthenticated users</param>
+        public ActivityAuthorizer(IAuthorizationScopeProvider scopeProvider, bool authorized, string defaultActivity = null, bool allowUnauthenticated = false)
         {
-            this.provider = provider;
+            this.scopeProvider = scopeProvider;
 
             DefaultAuthorization = authorized;
             DefaultAllowUnauthenticated = allowUnauthenticated;
@@ -48,25 +49,25 @@ namespace Meerkat.Security.Activities
         /// <copydoc cref="IActivityAuthorizer.IsAuthorized" />
         public AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null)
         {
-            var activities = provider.Activities();
-
-            return IsAuthorized(activities.ToDictionary(), resource, action, principal);
+            return IsAuthorizedAsync(resource, action, principal, values).Result;
         }
 
         /// <copydoc cref="IActivityAuthorizer.IsAuthorizedAsync" />
-        public async Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null)
+        public async Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var activities = await provider.ActivitiesAsync().ConfigureAwait(false);
+            var scope = await scopeProvider.AuthorizationScopeAsync(cancellationToken).ConfigureAwait(false);
+            if (scope == null)
+            {
+                Logger.Warn("No data returned from scope provider");
+                scope = new AuthorizationScope { Name = "Default" };
+            }
 
-            return IsAuthorized(activities.ToDictionary(), resource, action, principal);
-        }
+            var activities = scope.Activities.ToDictionary();
 
-        private AuthorizationReason IsAuthorized(IDictionary<string, Activity> activities, string resource, string action, IPrincipal principal, IDictionary<string, object> values = null)
-        {
             // Get the state for this request
-            var defaultAuthorization = provider.DefaultAuthorization() ?? DefaultAuthorization;
-            var defaultActivity = provider.DefaultActivity() ?? DefaultActivity;
-            var defaultAllowUnauthenticated = provider.DefaultAllowUnauthenticated() ?? DefaultAllowUnauthenticated;
+            var defaultAuthorization = scope.DefaultAuthorization ?? DefaultAuthorization;
+            var defaultActivity = scope.DefaultActivity ?? DefaultActivity;
+            var defaultAllowUnauthenticated = scope.AllowUnauthenticated ?? DefaultAllowUnauthenticated;
 
             // Set up the reason
             var reason = new AuthorizationReason
@@ -79,7 +80,7 @@ namespace Meerkat.Security.Activities
                 IsAuthorized = defaultAuthorization
             };
 
-            // Do a check for the unauthenticated state
+            // Do a short-circuit check for the unauthenticated state, will be overridden if there is a matching activity
             if (!defaultAllowUnauthenticated && !principal.Identity.IsAuthenticated)
             {
                 reason.IsAuthorized = false;

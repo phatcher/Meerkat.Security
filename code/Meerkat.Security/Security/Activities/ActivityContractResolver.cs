@@ -11,7 +11,7 @@ namespace Meerkat.Security.Activities
         {
             var property = base.CreateProperty(member, memberSerialization);
 
-            if (property.DeclaringType == typeof(Authorizations))
+            if (property.DeclaringType == typeof(AuthorizationScope))
             {
                 //switch (property.PropertyName)
                 //{

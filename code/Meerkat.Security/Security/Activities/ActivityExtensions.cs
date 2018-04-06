@@ -57,25 +57,32 @@ namespace Meerkat.Security.Activities
         }
 
         /// <summary>
-        /// Convert an <see cref="ActivityAuthorizationSection"/> into a list of <see cref="Activity"/>.
+        /// Convert an <see cref="ActivityAuthorizationSection"/> into a <see cref="AuthorizationScope"/>
         /// </summary>
         /// <param name="authorizationSection"></param>
         /// <returns></returns>
-        public static IList<Activity> ToActivitites(this ActivityAuthorizationSection authorizationSection)
+        public static AuthorizationScope ToAuthorizationScope(this ActivityAuthorizationSection authorizationSection)
         {
-            var activities = new List<Activity>();
+            var scope = new AuthorizationScope();
             if (authorizationSection == null)
             {
-                return activities;
+                return scope;
             }
 
+            var activities = new List<Activity>();
             for (var i = 0; i < authorizationSection.Activities.Count; i++)
             {
                 var element = authorizationSection.Activities[i];
                 activities.Add(element.ToActivity());
             }
 
-            return activities;
+            scope.Name = authorizationSection.Name;
+            scope.DefaultAuthorization = authorizationSection.Default;
+            scope.DefaultActivity = authorizationSection.DefaultActivity;
+            scope.AllowUnauthenticated = authorizationSection.DefaultAllowUnauthenticated;
+            scope.Activities = activities;
+
+            return scope;
         }
 
         /// <summary>

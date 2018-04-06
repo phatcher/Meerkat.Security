@@ -1,6 +1,7 @@
 ### 3.0.0 (2018-04-03)
 * Target net45 and netstandard2.0 where appropriate
-* Introduce json serialization for configuration
+* Breaking change: Replaced IActivityProvider with IAuthorizationScopeProvider
+* Introduced json serialization for configuration
 
 ### 2.2.4 (2017-09-14)
 * Fix ActivityLinkExtension to use IControllerActivityMapper
@@ -32,7 +33,7 @@
 
 #### 1.1.0 (2016-05-24)
 * Introduce claims based authorization, permission can support multiple claims types/claims
-* Breaking change, removed Role from AuthorizationReason and replaced with Reason which records the User, Role or Claim that satisfies a permission
+* Breaking change: Removed Role from AuthorizationReason and replaced with Reason which records the User, Role or Claim that satisfies a permission
 
 #### 1.0.2 (2016-05-23)
 * Renamed Authorise -> Authorise throughout for consistency

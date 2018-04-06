@@ -5,17 +5,17 @@ namespace Meerkat.Security.Activities
     /// <summary>
     /// A coherent set of <see cref="Activity"/>
     /// </summary>
-    public class Authorizations
+    public class AuthorizationScope
     {
-        public Authorizations()
+        public AuthorizationScope()
         {
             Activities = new List<Activity>();
         }
 
         /// <summary>
-        /// Gets or sets the scope of the authorizations
+        /// Gets or sets the name
         /// </summary>
-        public string Scope { get; set; }
+        public string Name { get; set; }
         
         /// <summary>
         /// Gets or sets the default activity
@@ -23,14 +23,14 @@ namespace Meerkat.Security.Activities
         public string DefaultActivity { get; set; }
 
         /// <summary>
-        /// Gets or sets whether we default to allowing unauthenticated
-        /// </summary>
-        public bool? DefaultAllowUnauthenticated { get; set; }
-
-        /// <summary>
-        /// Gets or sets the default authentication rule
+        /// Gets or sets the default authorization.
         /// </summary>
         public bool? DefaultAuthorization { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether we default to allowing unauthenticated
+        /// </summary>
+        public bool? AllowUnauthenticated { get; set; }
 
         /// <summary>
         /// Gets or sets the activities.

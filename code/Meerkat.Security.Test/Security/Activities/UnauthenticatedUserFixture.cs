@@ -12,8 +12,8 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void DefaultTrueUnauthenticatedTrue()
         {
-            var activities = new List<Activity>();
-            var provider = new StaticActivityProvider(activities);
+            var scope = new AuthorizationScope();
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, true, null, true);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -26,8 +26,8 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void DefaultTrueUnauthenticatedFalse()
         {
-            var activities = new List<Activity>();
-            var provider = new StaticActivityProvider(activities);
+            var scope = new AuthorizationScope();
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, true, null, false);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -40,8 +40,8 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void DefaultFalseUnauthenticatedTrue()
         {
-            var activities = new List<Activity>();
-            var provider = new StaticActivityProvider(activities);
+            var scope = new AuthorizationScope();
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, true);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -54,8 +54,8 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void DefaultFalseUnauthenticatedFalse()
         {
-            var activities = new List<Activity>();
-            var provider = new StaticActivityProvider(activities);
+            var scope = new AuthorizationScope();
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -68,19 +68,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void UnauthenticatedActivityNullDefaultTrue()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    //AllowUnauthenticated = true,
-                    // NB This allows us to override the top level default
-                    Default = true,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        //AllowUnauthenticated = true,
+                        // NB This allows us to override the top level default
+                        Default = true,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -93,19 +96,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void UnauthenticatedActivityNullDefaultFalse()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    //AllowUnauthenticated = true,
-                    // NB This allows us to override the top level default
-                    Default = false,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        //AllowUnauthenticated = true,
+                        // NB This allows us to override the top level default
+                        Default = false,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -118,19 +124,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void UnauthenticatedActivityTrueDefaultTrue()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    AllowUnauthenticated = true,
-                    // NB This allows us to override the top level default
-                    Default = true,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        AllowUnauthenticated = true,
+                        // NB This allows us to override the top level default
+                        Default = true,
+                    }
                 }
-            }; 
-            
-            var provider = new StaticActivityProvider(activities);
+            };
+
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -143,19 +152,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void UnauthenticatedActivityTrueDefaultFalse()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    AllowUnauthenticated = true,
-                    // NB This allows us to override the top level default
-                    Default = false,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        AllowUnauthenticated = true,
+                        // NB This allows us to override the top level default
+                        Default = false,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -168,19 +180,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void UnauthenticatedActivityFalseDefaultTrue()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    AllowUnauthenticated = false,
-                    // NB This allows us to override the top level default
-                    Default = true,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        AllowUnauthenticated = false,
+                        // NB This allows us to override the top level default
+                        Default = true,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -193,19 +208,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void UnauthenticatedActivityFalseDefaultFalse()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    AllowUnauthenticated = false,
-                    // NB This allows us to override the top level default
-                    Default = false,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        AllowUnauthenticated = false,
+                        // NB This allows us to override the top level default
+                        Default = false,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("fred", new List<string>(), null, false);
@@ -218,19 +236,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void AuthenticatedActivityNullDefaultTrue()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    //AllowUnauthenticated = true,
-                    // NB This allows us to override the top level default
-                    Default = true,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        //AllowUnauthenticated = true,
+                        // NB This allows us to override the top level default
+                        Default = true,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("charlie", new List<string>());
@@ -243,19 +264,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void AuthenticatedActivityNullDefaultFalse()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    //AllowUnauthenticated = true,
-                    // NB This allows us to override the top level default
-                    Default = false,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        //AllowUnauthenticated = true,
+                        // NB This allows us to override the top level default
+                        Default = false,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("charlie", new List<string>());
@@ -268,19 +292,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void AuthenticatedActivityTrueDefaultTrue()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    AllowUnauthenticated = true,
-                    // NB This allows us to override the top level default
-                    Default = true,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        AllowUnauthenticated = true,
+                        // NB This allows us to override the top level default
+                        Default = true,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("charlie", new List<string>());
@@ -293,19 +320,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void AuthenticatedActivityTrueDefaultFalse()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    AllowUnauthenticated = true,
-                    // NB This allows us to override the top level default
-                    Default = false,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        AllowUnauthenticated = true,
+                        // NB This allows us to override the top level default
+                        Default = false,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("charlie", new List<string>());
@@ -318,19 +348,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void AuthenticatedActivityFalseDefaultTrue()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    AllowUnauthenticated = false,
-                    // NB This allows us to override the top level default
-                    Default = true,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        AllowUnauthenticated = false,
+                        // NB This allows us to override the top level default
+                        Default = true,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("charlie", new List<string>());
@@ -343,19 +376,22 @@ namespace Meerkat.Test.Security.Activities
         [Test]
         public void AuthenticatedActivityFalseDefaultFalse()
         {
-            var activities = new List<Activity>
+            var scope = new AuthorizationScope
             {
-                new Activity
+                Activities =
                 {
-                    Resource = "Home",
-                    Action = "Index",
-                    AllowUnauthenticated = false,
-                    // NB This allows us to override the top level default
-                    Default = false,
+                    new Activity
+                    {
+                        Resource = "Home",
+                        Action = "Index",
+                        AllowUnauthenticated = false,
+                        // NB This allows us to override the top level default
+                        Default = false,
+                    }
                 }
             };
 
-            var provider = new StaticActivityProvider(activities);
+            var provider = new StaticAuthorizationScopeProvider(scope);
             var authorizer = new ActivityAuthorizer(provider, false, null, false);
 
             var principal = CreatePrincipal("charlie", new List<string>());

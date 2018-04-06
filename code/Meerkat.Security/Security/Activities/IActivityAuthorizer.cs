@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Security.Principal;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Meerkat.Security.Activities
@@ -27,6 +28,6 @@ namespace Meerkat.Security.Activities
         /// <param name="principal">User to use</param>
         /// <param name="values">Additional values to determine the authorization</param>
         /// <returns>The authorization reason</returns>
-        Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null);
+        Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null, CancellationToken cancellationToken = default(CancellationToken));
     }
 }
