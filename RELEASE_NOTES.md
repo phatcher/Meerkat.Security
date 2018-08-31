@@ -1,3 +1,7 @@
+### 3.1.0 (2018-08-30)
+* Change ActivityAuthorizer so reason is given if it is the default granting/denying permission
+* Target net462, net471 and net472
+
 ### 3.0.0 (2018-04-03)
 * Target net45 and netstandard2.0 where appropriate
 * Breaking change: Replaced IActivityProvider with IAuthorizationScopeProvider
