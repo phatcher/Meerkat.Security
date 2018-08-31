@@ -27,6 +27,7 @@ namespace Meerkat.Security.Activities
         /// <param name="action">Action to use</param>
         /// <param name="principal">User to use</param>
         /// <param name="values">Additional values to determine the authorization</param>
+        /// <param name="cancellationToken"></param>
         /// <returns>The authorization reason</returns>
         Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null, CancellationToken cancellationToken = default(CancellationToken));
     }

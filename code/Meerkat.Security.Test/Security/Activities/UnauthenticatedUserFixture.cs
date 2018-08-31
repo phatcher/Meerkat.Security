@@ -90,7 +90,7 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.True, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.Reason, Is.EqualTo("Default: True"), "Reason differs");
         }
 
         [Test]
@@ -118,7 +118,7 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.False, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.Reason, Is.EqualTo("Default: False"), "Reason differs");
         }
 
         [Test]
@@ -258,7 +258,7 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.True, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.Reason, Is.EqualTo("Default: True"), "Reason differs");
         }
 
         [Test]
@@ -286,7 +286,7 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.False, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.Reason, Is.EqualTo("Default: False"), "Reason differs");
         }
 
         [Test]
@@ -314,7 +314,7 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.True, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.Reason, Is.EqualTo("Default: True"), "Reason differs");
         }
 
         [Test]
@@ -342,7 +342,7 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.False, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.Reason, Is.EqualTo("Default: False"), "Reason differs");
         }
 
         [Test]
@@ -370,7 +370,7 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.True, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.Reason, Is.EqualTo("Default: True"), "Reason differs");
         }
 
         [Test]
@@ -398,7 +398,7 @@ namespace Meerkat.Test.Security.Activities
             var candidate = authorizer.IsAuthorized("Home", "Index", principal);
 
             Assert.That(candidate.IsAuthorized, Is.False, "IsAuthorized differs");
-            Assert.That(candidate.Reason, Is.Null, "Reason differs");
+            Assert.That(candidate.Reason, Is.EqualTo("Default: False"), "Reason differs");
         }
     }
 }

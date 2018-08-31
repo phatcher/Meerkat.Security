@@ -49,6 +49,7 @@ namespace Meerkat.Security.Activities
             {
                 // Default authorization on the activity.
                 reason.NoDecision = false;
+                reason.Reason = "Default: " + activity.Default.Value;
                 reason.IsAuthorized = activity.Default.Value;
             }
 

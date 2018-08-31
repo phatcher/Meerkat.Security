@@ -118,7 +118,7 @@ namespace Meerkat.Security.Activities
 
             if (!reason.IsAuthorized)
             {
-                Logger.InfoFormat("Failed authorization: User '{0}', Resource: '{1}', Action: '{2}'", principal == null ? "<Unknown>" : principal.Identity.Name, resource, action);
+                Logger.InfoFormat("Failed authorization: User '{0}', Resource: '{1}', Action: '{2}', Rationale: '{3}'", principal == null ? "<Unknown>" : principal.Identity.Name, resource, action, reason?.PrincipalReason?.Reason ?? reason.Reason);
             }
 
             return reason;
