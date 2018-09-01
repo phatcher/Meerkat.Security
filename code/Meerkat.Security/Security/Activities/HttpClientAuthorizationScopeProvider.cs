@@ -51,7 +51,7 @@ namespace Meerkat.Security.Activities
 
                 var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-                return result.ToAuthorizations();
+                return result.ToAuthorizationScope();
             }
             catch (OperationCanceledException)
             {

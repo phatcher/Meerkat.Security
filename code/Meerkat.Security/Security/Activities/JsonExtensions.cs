@@ -15,12 +15,22 @@ namespace Meerkat.Security.Activities
             return settings;
         }
 
+        /// <summary>
+        /// Converts an <see cref="AuthorizationScope" /> to a json representation
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public static string ToJson(this AuthorizationScope entity)
         {
             return JsonConvert.SerializeObject(entity, AuthorizationsSettings());
         }
 
-        public static AuthorizationScope ToAuthorizations(this string source)
+        /// <summary>
+        /// Converts a json string into a <see cref="AuthorizationScope"/>
+        /// </summary>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static AuthorizationScope ToAuthorizationScope(this string source)
         {
             return JsonConvert.DeserializeObject<AuthorizationScope>(source, AuthorizationsSettings());
         }

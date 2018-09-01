@@ -1,3 +1,6 @@
+### 3.1.1 (2018-09-01)
+* Improve AuthorizationScope json serialization
+
 ### 3.1.0 (2018-08-30)
 * Change ActivityAuthorizer so reason is given if it is the default granting/denying permission
 * Target net462, net471 and net472
