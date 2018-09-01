@@ -65,7 +65,7 @@ namespace Meerkat.Test.Security.Activities
 
             var json = source.ToJson();
 
-            var candidate = json.ToAuthorizations();
+            var candidate = json.ToAuthorizationScope();
 
             Check(source, candidate);
         }
@@ -108,7 +108,7 @@ namespace Meerkat.Test.Security.Activities
 
             var json = source.ToJson();
 
-            var candidate = json.ToAuthorizations();
+            var candidate = json.ToAuthorizationScope();
 
             Check(source, candidate);
         }
@@ -151,7 +151,7 @@ namespace Meerkat.Test.Security.Activities
 
             var json = source.ToJson();
 
-            var candidate = json.ToAuthorizations();
+            var candidate = json.ToAuthorizationScope();
 
             Check(source, candidate);
         }
@@ -195,7 +195,7 @@ namespace Meerkat.Test.Security.Activities
 
             var json = source.ToJson();
 
-            var candidate = json.ToAuthorizations();
+            var candidate = json.ToAuthorizationScope();
 
             Check(source, candidate);
         }
