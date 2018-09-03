@@ -1,5 +1,6 @@
-### 3.1.1 (2018-09-01)
+### 3.1.1 (2018-09-03)
 * Improve AuthorizationScope json serialization
+* Tidy up package dependencies
 
 ### 3.1.0 (2018-08-30)
 * Change ActivityAuthorizer so reason is given if it is the default granting/denying permission
