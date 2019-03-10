@@ -1,3 +1,6 @@
+#### 3.1.2 (2019-03-10)
+* Introduce SourceLink, update dependencies
+
 ### 3.1.1 (2018-09-03)
 * Improve AuthorizationScope json serialization
 * Tidy up package dependencies
