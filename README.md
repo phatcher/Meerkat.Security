@@ -30,26 +30,25 @@ will be different from mine so make sure that you first understand what you are 
 
 * [Basic Concepts](#basic-concepts)
 * [Defining your security model](#defining-the-security-model)
-* [Securing an MVC application](#Securing an MVC application)
-* [Securing a WebApi application](#Securing a WebApi application)
+* [Securing an application](#securing-an-application)
 
 # Basic Concepts
 
 Here we cover off the key building blocks of the framework
 
 * [Security models](#security-models): Conceptual models of how to implement access controls
-* [Principals and claims](#princpals-and-claims): .NET model of the subject i.e. the user requesting access and security attributes such as roles.
+* [Principals and claims](#principals-and-claims): .NET model of the subject i.e. the user requesting access and security attributes such as roles.
 * [Resources and Activities](#resources-and-activities) The object being secured and the operation being requested
 * [Grant vs Deny permissions](#grant-vs-deny-permissions): A permission explicitly granting or denying that the subject is permitted to perform the operation
 
 ## Security Models
 
 There are four classic models of access control: 
-* **Discrectionary Access Control (DAC)**: Control based on restricting access based on the identity of subjects and/or groups to which they belong. The controls are discretionary in the sense
+* **Discretionary Access Control (DAC)**: Control based on restricting access based on the identity of subjects and/or groups to which they belong. The controls are discretionary in the sense
 that a subject with certain access permission is capable of passing that permission on to any other subject.
 * **Mandatory Access Control (MAC)**: Any operation by any subject on any object is tested against the set of authorization rules (aka policy) to determine if the operation is allowed. The ability
 to grant permissions itself comes under MAC and this distinguishes it from the simpler DAC model.
-* **Role Based Acccess Control (RBAC)**: This is a policy neutral access control mechanism around roles and permissions and although different from DAC and MAC can easily be used to enforce such constraints
+* **Role Based Access Control (RBAC)**: This is a policy neutral access control mechanism around roles and permissions and although different from DAC and MAC can easily be used to enforce such constraints
 * **Attribute Based Access Control (ABAC)**: This evolved from RBAC to consider additional attribute of either the subject or secured resource in addition to roles and groups and is policy-based in the sense that
 it uses policies rather than static permissions to define what is authorized.
 
@@ -90,8 +89,8 @@ you don't want him to be able to do too much damage so you also say Bob Deny **_
 
 # Defining the security model
 
-Following on from the idea of resources and activities, your security model should be focussed on your business functionality rather than how you map this to a particular software implementation. If you do this, it will be much
-easier to explain to the business sponsors what is being secured and why, and should more naturally flow from any analysis dicussions e.g. "We only want managers to be able to approve invoices".
+Following on from the idea of resources and activities, your security model should be focused on your business functionality rather than how you map this to a particular software implementation. If you do this, it will be much
+easier to explain to the business sponsors what is being secured and why, and should more naturally flow from any analysis discussions e.g. "We only want managers to be able to approve invoices".
 
 Another way of developing this structure is rather than resource/activity is noun/verb; nouns represent objects that need securing and verbs are the operations that users will perform.  You can stray from this pattern, but it should
 be intentional rather than accidental.
@@ -106,7 +105,7 @@ Lets take a simple business model
 * **Finance Manager**: Supervises invoice clerks
 * **Finance Director**: Supervises managers
 
-So what we want to implemnt is the following
+So what we want to implement is the following
 
 * **Sales Clerk**: Can read, create, amend, ship and cancel Orders but can't delete them, has no rights to Invoices
 * **Sales Manager**: Can read, ship and cancel Orders but can only read Invoices
@@ -188,16 +187,16 @@ This allow us to define wider rules and then pare them back with exclusions e.g.
 
 This grants all activities on **_Invoice_** to the **_InvoiceClerk_**, but then specifically disallows them from **_Approve_** whilst granting that right to the **_FinanceManager_**.
 
-One general principle is not to have hierarchies of roles, if you do so it makes it much more difficult to see the implications of changes to the security model and can lead to inadvertant breaches
-of seperation of concern rules. For example, if instead of explicitly denoting a **_FinanceDirector's_** permissions we also said that they also inherit the other roles, then a bad actor could create an order, invoice
-it and approve it without the security model complainsing.
+One general principle is not to have hierarchies of roles, if you do so it makes it much more difficult to see the implications of changes to the security model and can lead to inadvertent breaches
+of separation of concern rules. For example, if instead of explicitly denoting a **_FinanceDirector's_** permissions we also said that they also inherit the other roles, then a bad actor could create an order, invoice
+it and approve it without the security model complaining.
 
 ## Hierarchies
 
 Sometimes you need more fine-grained security, for example you want to provide some property-level permissioning so employee information is available but their salary information is not. Another example might be that
-you want people to being to print some reports but exclude them from more sensitive data; to do this we have the concept of both resource and activity hiearchies.
+you want people to being to print some reports but exclude them from more sensitive data; to do this we have the concept of both resource and activity hierarchies.
 
-This is acheived by using a path separator "/" in either the resource, the activity or both, the authorization system then checks them using a canonical ordering from most specific to least specific to determine the permission
+This is achieved by using a path separator "/" in either the resource, the activity or both, the authorization system then checks them using a canonical ordering from most specific to least specific to determine the permission
 to apply, and this first one to make a decision is the one applied. For example given the following security fragment...
 
        <activity name="Reports.Print" authorized="true" />
@@ -210,7 +209,7 @@ to apply, and this first one to make a decision is the one applied. For example 
 
 This says that all authenticated users are allow to print reports, but only Sales are allowed to print Sales reports and only HR are allowed to print Employee reports.
 
-So if we ask to authorize **_Reports/Sales.Print_** the following activtiies would be considered in this order
+So if we ask to authorize **_Reports/Sales.Print_** the following activities would be considered in this order
 
 Reports/Sales.Print -> Reports.Print -> .Print
 
@@ -230,11 +229,56 @@ get tricky as a Deny is an immediate block on further evaluation, e.g. given
        </activity>
 
 The problem is if you make a HR user a member of Users, they would be locked out of their reports due to the Deny taking precedence. This also brings up a good point of generally avoiding groups such as **_Users_**. We effectively
-get this overall group by virtue of them being authenticated and you can include everyone with for an activity with a 'authorized="true"' clause or even 'allowUnauthenticated="true"', for example one standard entry I have in most security files is
+get this overall group by virtue of users being authenticated and you can include everyone with for an activity with a 'authorized="true"' clause or even 'allowUnauthenticated="true"', for example one standard entry I have in most security files is
 
     <activity name="Home.Index" authorized="true" allowUnauthenticated="true" />
 
-To use the hiearchies effectively you might need to make more than one call to the authorization system...
+To use the hierarchies effectively you might need to make more than one call to the authorization system...
 
 * A employee MVC controller is secured with **_Employee.Read_** but you do an additional check on **_Employee/Salary.Read_** before returning that data.
 * The top level Reports link might be secured with **_Reports.Print_** but a particular report might be secured with **_Reports/Salary.Print_**.
+
+# Securing an Application
+
+To secure application we need to:
+
+* Tell the system to enforce the security model
+* Map the controller/action to the resource/activity security model
+
+Some of this code is generic and is in the Meerkat.Security assembly, but the MVC specific code is held in Meerkat.Security.Mvc and this should be referenced from your MVC project. The process to secure a WebApi application is the same as that for an MVC application, but a different assembly must be referenced as MVC and WebApi do not share the same code base.
+
+## Enforce security model
+
+We want the security model to be enforced with as little programmer intervention as possible, so the easy way is to introduce a custom attribute similar to the built-in **_Authorize_** attribute. Our one is called **_ActivityAuthorize_** and can either be registered via a global filter, or explicitly placed on a controller.  If introduced as a global filter, the system automatically determines the relevant controller/action information from the routing information.
+
+It is possible to put multiple **_ActivityAuthorize_** on a controller action but be aware that all such attributes must evaluate to true for the user to be granted access; this may be useful where more complex security requirements arise.
+
+## Mapping controller/action
+
+There is a fairly natural mapping from controller/action to resource/activity but it sometimes needs a little help so that we do not unnecessarily multiple up activities. For a standard MVC controller you will typically have the following actions, the relevant activity is shown afterwards
+
+* Index: Displays the list of data - **_Read_**
+* Details: Displays a single item - **_Read_**
+* Create: Creates an entity - **_Create_**
+* Edit: Modifies an entity - **_Update_**
+* Delete: Deletes an entity - **_Delete_**
+
+For a WebAPI controller we have a slightly different set if we are following REST API rules
+
+* Get: Displays the list of data - **_Read_**
+* Get Displays a single item - **_Read_**
+* Post: Creates an entity - **_Create_**
+* Put: Modifies an entity - **_Update_**
+* Patch: Modifies an entity - **_Update_**
+* Delete: Deletes an entity - **_Delete_**
+
+If you are using an OData controller you may also need to support sub-types of your main entities
+
+* GetFromXXX: Displays the list of data - Resource: XXXX, **_Read_**
+* GetXXX Displays a single item - Resource: XXXX, **_Read_**
+* PostXXX: Creates an entity - Resource: XXXX, **_Create_**
+* PutXXX: Modifies an entity - Resource: XXXX, **_Update_**
+* PatchXXX: Modifies an entity - Resource: XXXX, **_Update_**
+
+To avoid having to specify the changed values on every controller, we introduce a new service **_IControllerActivityMapper_** with a default implementation that performs the basic mappings shown above.
+
