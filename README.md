@@ -117,8 +117,7 @@ This gives a reasonable separation of powers where it requires at least two acto
 
 This can be represented in the following table, blank nodes means no rights
 
-|          | Role     | SC | SM | IC | FM | FD |
-| Resource | Activity |    |    |    |    |    |
+| Resource | Activity | SC | SM | IC | FM | FD |
 | -------- | -------- | --- | --- | --- | --- | --- |
 | Order    | Read     | x  | x  |    | x  | x  |
 | Order    | Create   | x  |    |    |    |    |
