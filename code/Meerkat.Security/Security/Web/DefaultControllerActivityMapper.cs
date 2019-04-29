@@ -7,6 +7,7 @@ namespace Meerkat.Security.Web
     /// </summary>
     public class DefaultControllerActivityMapper : IControllerActivityMapper
     {
+        /// <copydoc cref="IControllerActivityMapper.Map" />
         public Tuple<string, string> Map(string controller, string action)
         {
             return new Tuple<string, string>(controller, action);

@@ -26,6 +26,7 @@ namespace Meerkat.Security.Activities
             scope = section.ToAuthorizationScope();
         }
 
+        /// <copydoc cref="IAuthorizationScopeProvider.AuthorizationScopeAsync" />
         public Task<AuthorizationScope> AuthorizationScopeAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             // Static result so just return.

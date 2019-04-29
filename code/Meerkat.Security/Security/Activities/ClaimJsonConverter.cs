@@ -19,22 +19,22 @@ namespace Meerkat.Security.Activities
 
             if (!string.IsNullOrEmpty(claim.Type))
             {
-                writer.WritePropertyName("Type");
+                writer.WritePropertyName("type");
                 writer.WriteValue(claim.Type);
             }
             if (!string.IsNullOrEmpty(claim.Value))
             {
-                writer.WritePropertyName("Value");
+                writer.WritePropertyName("value");
                 writer.WriteValue(claim.Value);
             }
             if (!string.IsNullOrEmpty(claim.Issuer))
             {
-                writer.WritePropertyName("Issuer");
+                writer.WritePropertyName("issuer");
                 writer.WriteValue(claim.Issuer);
             }
             if (!string.IsNullOrEmpty(claim.ValueType) && claim.ValueType != "http://www.w3.org/2001/XMLSchema#string")
             {
-                writer.WritePropertyName("ValueType");
+                writer.WritePropertyName("valueType");
                 writer.WriteValue(claim.ValueType);
             }
 
@@ -45,10 +45,10 @@ namespace Meerkat.Security.Activities
         {
             var item = JObject.Load(reader);
 
-            var type = (string)item["Type"];
-            var value = (string)item["Value"];
-            var issuer = (string)item["Issuer"];
-            var valueType = (string)item["ValueType"];
+            var type = (string)item["type"];
+            var value = (string)item["value"];
+            var issuer = (string)item["issuer"];
+            var valueType = (string)item["valueType"];
 
             return new Claim(type, value, valueType, issuer);
         }

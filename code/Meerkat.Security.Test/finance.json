@@ -1,0 +1,128 @@
+{
+  "name": "Finance",
+  "defaultActivity": "",
+  "defaultAuthorization": false,
+  "allowUnauthenticated": false,
+  "activities": [
+    {
+      "resource": "Order",
+      "action": "Read",
+      "allow": {
+        "roles": [
+          "SalesManager",
+          "FinanceManager",
+          "FinanceDirector"
+        ]
+      },
+      "deny": {}
+    },
+    {
+      "resource": "Order",
+      "action": "",
+      "allow": {
+        "roles": [
+          "SalesClerk"
+        ]
+      },
+      "deny": {}
+    },
+    {
+      "resource": "Order",
+      "action": "Ship",
+      "allow": {
+        "roles": [
+          "SalesManager"
+        ]
+      },
+      "deny": {}
+    },
+    {
+      "resource": "Order",
+      "action": "Cancel",
+      "allow": {
+        "roles": [
+          "SalesManager"
+        ]
+      },
+      "deny": {}
+    },
+    {
+      "resource": "Order",
+      "action": "Delete",
+      "allow": {
+        "roles": [
+          "FinanceDirector"
+        ]
+      },
+      "deny": {
+        "roles": [
+          "SalesClerk"
+        ]
+      }
+    },
+    {
+      "resource": "Invoice",
+      "action": "Read",
+      "allow": {
+        "roles": [
+          "SalesManager",
+          "FinanceManager",
+          "FinanceDirector"
+        ]
+      },
+      "deny": {}
+    },
+    {
+      "resource": "Invoice",
+      "action": "",
+      "allow": {
+        "roles": [
+          "InvoiceClerk"
+        ]
+      },
+      "deny": {}
+    },
+    {
+      "resource": "Invoice",
+      "action": "Approve",
+      "allow": {
+        "roles": [
+          "FinanceManager"
+        ]
+      },
+      "deny": {
+        "roles": [
+          "InvoiceClerk"
+        ]
+      }
+    },
+    {
+      "resource": "Invoice",
+      "action": "Cancel",
+      "allow": {
+        "roles": [
+          "FinanceManager"
+        ]
+      },
+      "deny": {
+        "roles": [
+          "InvoiceClerk"
+        ]
+      }
+    },
+    {
+      "resource": "Invoice",
+      "action": "Delete",
+      "allow": {
+        "roles": [
+          "FinanceDirector"
+        ]
+      },
+      "deny": {
+        "roles": [
+          "InvoiceClerk"
+        ]
+      }
+    }
+  ]
+}

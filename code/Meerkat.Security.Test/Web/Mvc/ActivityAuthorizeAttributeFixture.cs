@@ -1,5 +1,8 @@
-﻿using System.Web.Mvc;
+﻿#if NETFRAMEWORK
+using System.Web.Mvc;
+
 using Meerkat.Security.Activities;
+
 using Moq;
 using NUnit.Framework;
 
@@ -16,3 +19,4 @@ namespace Meerkat.Test.Web.Mvc
         }
     }
 }
+#endif

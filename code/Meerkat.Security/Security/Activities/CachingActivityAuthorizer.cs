@@ -11,6 +11,9 @@ namespace Meerkat.Security.Activities
     /// <summary>
     /// Caching version of a <see cref="IActivityAuthorizer"/>.
     /// </summary>
+#if NETSTANDARD
+    [Obsolete("Use ActivityAuthorizerCache/ActivityAuthorizerMemoryCache/ActivityAuthorizerDistributedCache")]
+#endif
     public class CachingActivityAuthorizer : IActivityAuthorizer
     {
         private readonly IActivityAuthorizer authorizer;
@@ -33,19 +36,19 @@ namespace Meerkat.Security.Activities
         /// <copydoc cref="IActivityAuthorizer.IsAuthorized" />
         public AuthorizationReason IsAuthorized(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null)
         {
-            return IsAuthorizedAsync(resource, action, principal, values).Result;
+            return IsAuthorizedAsync(resource, action, principal, values).ConfigureAwait(false).GetAwaiter().GetResult();
         }
 
-        public async Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null, CancellationToken token = default(CancellationToken))
+        public Task<AuthorizationReason> IsAuthorizedAsync(string resource, string action, IPrincipal principal, IDictionary<string, object> values = null, CancellationToken token = default(CancellationToken))
         {
             // TODO: Use AuthorizationReason.Expiry to influence cache duration
-            return await cache.AddOrGetExistingAsync(Key(resource, action, principal, values), async () => await authorizer.IsAuthorizedAsync(resource, action, principal, values, token).ConfigureAwait(false), DateTimeOffset.UtcNow.Add(duration), "authorizer").ConfigureAwait(false);
+            return cache.AddOrGetExistingAsync(Key(resource, action, principal, values), async () => await authorizer.IsAuthorizedAsync(resource, action, principal, values, token).ConfigureAwait(false), DateTimeOffset.UtcNow.Add(duration), "authorizer");
         }
 
         private string Key(string resource, string action, IPrincipal principal, IDictionary<string, object> values)
         {
             // TODO: Work out how/if we include values in the key
-            return $"{resource}.{action}:{principal}";
+            return $"{resource}:{action}:{principal}";
         }
     }
 }

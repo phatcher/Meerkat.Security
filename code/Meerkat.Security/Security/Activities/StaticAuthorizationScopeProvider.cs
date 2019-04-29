@@ -4,12 +4,16 @@ using System.Threading.Tasks;
 namespace Meerkat.Security.Activities
 {
     /// <summary>
-    /// Implementation of <see cref="IAuthorizationScopeProvider"/> that is initialized statically.
+    /// A <see cref="IAuthorizationScopeProvider"/> that is initialized statically.
     /// </summary>
     public class StaticAuthorizationScopeProvider : IAuthorizationScopeProvider
     {
         private readonly AuthorizationScope scope;
 
+        /// <summary>
+        /// Creates a new instance of the <see cref="StaticAuthorizationScopeProvider"/> class.
+        /// </summary>
+        /// <param name="scope"></param>
         public StaticAuthorizationScopeProvider(AuthorizationScope scope)
         {
             this.scope = scope;

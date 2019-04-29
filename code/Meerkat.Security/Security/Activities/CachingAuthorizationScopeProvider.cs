@@ -9,6 +9,9 @@ namespace Meerkat.Security.Activities
     /// <summary>
     /// Caches the output from another <see cref="IAuthorizationScopeProvider"/>.
     /// </summary>
+#if NETSTANDARD
+    [Obsolete("Use AuthorizationScopeProviderCache")]
+#endif
     public class CachingAuthorizationScopeProvider : IAuthorizationScopeProvider
     {
         private const string CacheRegion = "activityProvider";
@@ -30,6 +33,7 @@ namespace Meerkat.Security.Activities
             this.duration = duration ?? TimeSpan.FromMinutes(5);
         }
 
+        /// <copydoc cref="IAuthorizationScopeProvider.AuthorizationScopeAsync" />
         public async Task<AuthorizationScope> AuthorizationScopeAsync(CancellationToken cancellationToken = default(CancellationToken))
         {
             // TODO: With this design we can only cache one provider which might be issue with multiple microservices.

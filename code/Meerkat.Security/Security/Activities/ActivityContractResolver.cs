@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections;
+using System.Reflection;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -24,18 +25,49 @@ namespace Meerkat.Security.Activities
                 //        break;
                 //}
             }
-
-            if (property.DeclaringType == typeof(Activity))
+            else if (property.DeclaringType == typeof(Permission))
             {
-                if (property.PropertyName == "Allow")
+                property.ShouldSerialize = instance =>
                 {
-                    property.ShouldSerialize = x => x is Permission p && !p.IsEmpty();
-                }
-                if (property.PropertyName == "Deny")
-                {
-                    property.ShouldSerialize = x => x is Permission p && !p.IsEmpty();
-                }
+                    if (instance == null)
+                    {
+                        return false;
+                    }
+
+                    if (!(instance is Permission p))
+                    {
+                        return false;
+                    }
+
+                    return !p.IsEmpty();
+                };
             }
+            if (property.PropertyType != typeof(string) && typeof(IEnumerable).IsAssignableFrom(property.PropertyType))
+            {
+                property.ShouldSerialize = instance =>
+                {
+                    IEnumerable enumerable = null;
+                    // this value could be in a public field or public property
+                    switch (member.MemberType)
+                    {
+                        case MemberTypes.Property:
+                            enumerable = instance
+                                .GetType()
+                                .GetProperty(member.Name)
+                                ?.GetValue(instance, null) as IEnumerable;
+                            break;
+                        case MemberTypes.Field:
+                            enumerable = instance
+                                .GetType()
+                                .GetField(member.Name)
+                                .GetValue(instance) as IEnumerable;
+                            break;
+                    }
+
+                    return enumerable == null || enumerable.GetEnumerator().MoveNext();
+                    // if the list is null, we defer the decision to NullValueHandling
+                };
+            }       
 
             return property;
         }

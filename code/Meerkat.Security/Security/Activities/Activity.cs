@@ -10,6 +10,7 @@ namespace Meerkat.Security.Activities
         private Permission allow;
         private Permission deny;
 
+        [JsonIgnore]
         public string Name
         {
             get
@@ -26,27 +27,31 @@ namespace Meerkat.Security.Activities
         /// <summary>
         /// Get or set the resource name.
         /// </summary>
+        [JsonProperty("resource")]
         public string Resource { get; set; }
 
         /// <summary>
         /// Get or set the action name.
         /// </summary>
+        [JsonProperty("action")]
         public string Action { get; set; }
 
         /// <summary>
         /// Get or set whether we allow unauthenticated users
         /// </summary>
+        [JsonProperty("allowUnauthenticated")]
         public bool? AllowUnauthenticated { get; set; }
 
         /// <summary>
         /// Gets or sets the default authorization.
         /// </summary>
-        [JsonProperty("Authorized")]
+        [JsonProperty("authorized")]
         public bool? Default { get; set; }
 
         /// <summary>
         /// Gets or sets the allow grants.
         /// </summary>
+        [JsonProperty("allow")]
         public Permission Allow
         {
             get => allow ?? (allow = new Permission());
@@ -56,6 +61,7 @@ namespace Meerkat.Security.Activities
         /// <summary>
         /// Gets or sets the deny grants.
         /// </summary>
+        [JsonProperty("deny")]
         public Permission Deny
         {
             get => deny ?? (deny = new Permission());

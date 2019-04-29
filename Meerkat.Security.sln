@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meerkat.Security", "code\Meerkat.Security\Meerkat.Security.csproj", "{0C370A50-0D00-49BE-B305-36860F2978BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meerkat.Security", "code\Meerkat.Security\Meerkat.Security.csproj", "{0C370A50-0D00-49BE-B305-36860F2978BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meerkat.Security.Mvc", "code\Meerkat.Security.Mvc\Meerkat.Security.Mvc.csproj", "{2503F792-AE81-4489-8FE7-E64ACCE7661C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meerkat.Security.Mvc", "code\Meerkat.Security.Mvc\Meerkat.Security.Mvc.csproj", "{2503F792-AE81-4489-8FE7-E64ACCE7661C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meerkat.Security.WebApi", "code\Meerkat.Security.WebAPI\Meerkat.Security.WebApi.csproj", "{5C074790-4A55-47D2-B0FD-C364CD60B411}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meerkat.Security.WebApi", "code\Meerkat.Security.WebAPI\Meerkat.Security.WebApi.csproj", "{5C074790-4A55-47D2-B0FD-C364CD60B411}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meerkat.Security.Test", "code\Meerkat.Security.Test\Meerkat.Security.Test.csproj", "{FC0E8C20-D3C1-48AC-B7FC-88063A3CB6B2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meerkat.Security.Test", "code\Meerkat.Security.Test\Meerkat.Security.Test.csproj", "{FC0E8C20-D3C1-48AC-B7FC-88063A3CB6B2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testing", "Testing", "{FBC6F5F2-2D35-42CD-89E6-5F12CFF77677}"
 EndProject
@@ -23,6 +23,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 		RELEASE_NOTES.md = RELEASE_NOTES.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meerkat.Security.AspNetCore", "Code\Meerkat.Security.AspNetCore\Meerkat.Security.AspNetCore.csproj", "{FC7C966C-A527-45BA-AF56-DAF17AF07AE4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample.AspNetCore", "code\Sample.AspNetCore\Sample.AspNetCore.csproj", "{480AE705-46FD-4AB9-BB80-2C9D555AA8BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Web", "code\Sample.Web\Sample.Web.csproj", "{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.WebApi", "code\Sample.WebApi\Sample.WebApi.csproj", "{24E42595-8ADD-4DCB-8FE8-7CDFCA14CA27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample.Model", "Code\Sample.Model\Sample.Model.csproj", "{5A8CFAB6-36AD-4607-B6EF-1064E4CE6D95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,11 +56,38 @@ Global
 		{FC0E8C20-D3C1-48AC-B7FC-88063A3CB6B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC0E8C20-D3C1-48AC-B7FC-88063A3CB6B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC0E8C20-D3C1-48AC-B7FC-88063A3CB6B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC7C966C-A527-45BA-AF56-DAF17AF07AE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC7C966C-A527-45BA-AF56-DAF17AF07AE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC7C966C-A527-45BA-AF56-DAF17AF07AE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC7C966C-A527-45BA-AF56-DAF17AF07AE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{480AE705-46FD-4AB9-BB80-2C9D555AA8BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{480AE705-46FD-4AB9-BB80-2C9D555AA8BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{480AE705-46FD-4AB9-BB80-2C9D555AA8BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{480AE705-46FD-4AB9-BB80-2C9D555AA8BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DA59EB2-8ED2-40D0-9E0B-435CF3318731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24E42595-8ADD-4DCB-8FE8-7CDFCA14CA27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24E42595-8ADD-4DCB-8FE8-7CDFCA14CA27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24E42595-8ADD-4DCB-8FE8-7CDFCA14CA27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24E42595-8ADD-4DCB-8FE8-7CDFCA14CA27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A8CFAB6-36AD-4607-B6EF-1064E4CE6D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A8CFAB6-36AD-4607-B6EF-1064E4CE6D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A8CFAB6-36AD-4607-B6EF-1064E4CE6D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A8CFAB6-36AD-4607-B6EF-1064E4CE6D95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FC0E8C20-D3C1-48AC-B7FC-88063A3CB6B2} = {FBC6F5F2-2D35-42CD-89E6-5F12CFF77677}
+		{480AE705-46FD-4AB9-BB80-2C9D555AA8BE} = {FBC6F5F2-2D35-42CD-89E6-5F12CFF77677}
+		{9DA59EB2-8ED2-40D0-9E0B-435CF3318731} = {FBC6F5F2-2D35-42CD-89E6-5F12CFF77677}
+		{24E42595-8ADD-4DCB-8FE8-7CDFCA14CA27} = {FBC6F5F2-2D35-42CD-89E6-5F12CFF77677}
+		{5A8CFAB6-36AD-4607-B6EF-1064E4CE6D95} = {FBC6F5F2-2D35-42CD-89E6-5F12CFF77677}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6C4D266C-EB28-4787-B1CF-5F764EC76E05}
 	EndGlobalSection
 EndGlobal

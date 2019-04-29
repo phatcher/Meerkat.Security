@@ -58,7 +58,7 @@ namespace Meerkat.Security.Web.Http
         public override object TypeId => typeId;
 
         /// <summary>
-        /// Determines whether access for this particular <paramref name="actionContext"/> is authorized. This method uses te user
+        /// Determines whether access for this particular <paramref name="actionContext"/> is authorized. This method uses the user
         /// <see cref="IPrincipal"/> returned via <see cref="M:HttpRequestMessageExtensions.GetUserPrincipal"/>.
         /// Authorization is denied if
         /// <list type="bullet">

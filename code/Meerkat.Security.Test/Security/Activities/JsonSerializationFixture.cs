@@ -71,7 +71,6 @@ namespace Meerkat.Test.Security.Activities
         }
 
         [Test]
-
         public void DefaultAuthorizationTrue()
         {
             var source = new AuthorizationScope
@@ -114,7 +113,6 @@ namespace Meerkat.Test.Security.Activities
         }
 
         [Test]
-
         public void DefaultAuthorizationFalse()
         {
             var source = new AuthorizationScope
@@ -156,9 +154,7 @@ namespace Meerkat.Test.Security.Activities
             Check(source, candidate);
         }
 
-
         [Test]
-
         public void DefaultAuthorizationMixed()
         {
             var source = new AuthorizationScope

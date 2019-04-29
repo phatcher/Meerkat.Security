@@ -132,6 +132,7 @@ namespace Meerkat.Web.Mvc
             }
         }
 
+        /// <copydoc cref="AuthorizeAttribute.HandleUnauthorizedRequest" />
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             if (filterContext.HttpContext.User.Identity.IsAuthenticated && !string.IsNullOrEmpty(RedirectUrl))

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net471</TargetFrameworks>
+    <TargetFrameworks>net472;netcoreapp2.0</TargetFrameworks>
     <RootNamespace>Meerkat.Test</RootNamespace>
 	<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	<OutputPath>$(SolutionDir)/build/$(Configuration)/$(AssemblyName)/$(TargetFramework)/</OutputPath>
@@ -8,26 +8,29 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Moq" Version="4.10.1" />
-    <PackageReference Include="Microsoft.Net.Test.Sdk" Version="15.8.0" />
+    <PackageReference Include="Microsoft.Net.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="NCheck" Version="3.0.0" />
     <PackageReference Include="NUnit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.13.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" Condition="'$(TargetFramework)' == 'netcoreapp2.0'" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Meerkat.Security.Mvc\Meerkat.Security.Mvc.csproj">
-      <Project>{2503f792-ae81-4489-8fe7-e64acce7661c}</Project>
-      <Name>Meerkat.Security.Mvc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Meerkat.Security.WebAPI\Meerkat.Security.WebApi.csproj">
-      <Project>{5c074790-4a55-47d2-b0fd-c364cd60b411}</Project>
-      <Name>Meerkat.Security.WebAPI2</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Meerkat.Security\Meerkat.Security.csproj">
-      <Project>{0c370a50-0d00-49be-b305-36860f2978bc}</Project>
-      <Name>Meerkat.Security</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\Meerkat.Security.Mvc\Meerkat.Security.Mvc.csproj" Condition="'$(TargetFramework)' == 'net472'" />
+    <ProjectReference Include="..\Meerkat.Security.WebAPI\Meerkat.Security.WebApi.csproj" Condition="'$(TargetFramework)' == 'net472'" />
+    <ProjectReference Include="..\Meerkat.Security\Meerkat.Security.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' != 'netcoreapp2.2'">
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="finance.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+     <Copy SourceFiles="app.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
+  </Target>
 </Project>

@@ -3,7 +3,7 @@
 namespace Meerkat.Security.Web
 {
     /// <summary>
-    /// Converts standard MVC and WebAPI verbs into permission names.
+    /// Converts standard MVC and API verbs into permission names.
     /// <para>
     /// Current mappings include
     /// <list type="table">
@@ -32,6 +32,7 @@ namespace Meerkat.Security.Web
     /// </summary>
     public class ControllerActivityMapper : IControllerActivityMapper
     {
+        /// <copydoc cref="IControllerActivityMapper.Map" />
         public Tuple<string, string> Map(string controller, string controllerAction)
         {
             var resource = controller;
